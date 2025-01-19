@@ -1,15 +1,15 @@
 export enum TEMPLATE_CATEGORIES {
-  'PERSONAL_PAGES' = 'Personal Pages',
-  'COMPANY_PAGES' = 'Company Pages',
+  "PERSONAL_PAGES" = "Personal Pages",
+  "COMPANY_PAGES" = "Company Pages",
 }
 
 export const PERSONAL_TEMPLATES = [
   {
-    templateId: '',
+    templateId: "",
     thumbnail:
-      'https://images.unsplash.com/photo-1523170335258-f5ed11844a49?crop=entropy&cs=srgb&fm=jpg&ixid=M3w1OTU4NTJ8MHwxfHNlYXJjaHw0fHx3YXRjaHxlbnwwfDB8fHwxNzIwNzIzMjM0fDA&ixlib=rb-4.0.3&q=85',
-    style: '',
-    backgroundColor: '#E0F7FA',
+      "https://images.unsplash.com/photo-1523170335258-f5ed11844a49?crop=entropy&cs=srgb&fm=jpg&ixid=M3w1OTU4NTJ8MHwxfHNlYXJjaHw0fHx3YXRjaHxlbnwwfDB8fHwxNzIwNzIzMjM0fDA&ixlib=rb-4.0.3&q=85",
+    style: "",
+    backgroundColor: "#E0F7FA",
     components: `
 		<div class="flex flex-col justify-center items-center" ><body class="bg-primary-light font-sans">
     <div class="max-w-3xl mx-auto p-6 bg-white shadow-lg rounded-lg mt-12">
@@ -88,14 +88,14 @@ export const PERSONAL_TEMPLATES = [
     </div>
 </body></div>
 `,
-    heading: 'Watch',
+    heading: "Watch",
   },
   {
-    templateId: '',
+    templateId: "",
     thumbnail:
-      'https://images.unsplash.com/photo-1526947425960-945c6e72858f?crop=entropy&cs=srgb&fm=jpg&ixid=M3w1OTU4NTJ8MHwxfHNlYXJjaHw5fHxmYWNlJTIwY3JlYW18ZW58MHwwfHx8MTcyMDY5MzU2M3ww&ixlib=rb-4.0.3&q=85',
-    style: '',
-    backgroundColor: '#cac5c5',
+      "https://images.unsplash.com/photo-1526947425960-945c6e72858f?crop=entropy&cs=srgb&fm=jpg&ixid=M3w1OTU4NTJ8MHwxfHNlYXJjaHw5fHxmYWNlJTIwY3JlYW18ZW58MHwwfHx8MTcyMDY5MzU2M3ww&ixlib=rb-4.0.3&q=85",
+    style: "",
+    backgroundColor: "#cac5c5",
     components: `
 		<div class="flex flex-col justify-center items-center" >
 		<body class="bg-gray-100 font-sans">
@@ -148,33 +148,34 @@ export const PERSONAL_TEMPLATES = [
     </div>
 </body>
   </div>`,
-    heading: 'Face Cream',
+    heading: "Face Cream",
   },
   {
-    templateId: '',
-    thumbnail: '',
-    style: '',
-    backgroundColor: '#cac5c5',
+    templateId: "",
+    thumbnail: "",
+    style: "",
+    backgroundColor: "#cac5c5",
     components: `<body id="itgy"><h1 class="heading"><div class="ql-editor" contenteditable="true"><p><strong style="font-size: 25px;">Welcome to a random Template</strong></p></div></h1><p class="paragraph"><div class="ql-editor" contenteditable="true"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</p></div></p></body>`,
-    heading: 'Beautiful',
+    heading: "Beautiful",
   },
   {
-    templateId: '',
-    thumbnail: '',
-    style: '',
-    backgroundColor: '#cac5c5',
+    templateId: "",
+    thumbnail: "",
+    style: "",
+    backgroundColor: "#cac5c5",
     components: `<body id="itgy"><h1 class="heading"><div class="ql-editor" contenteditable="true"><p><strong style="font-size: 25px;">Welcome to a random Template</strong></p></div></h1><p class="paragraph"><div class="ql-editor" contenteditable="true"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</p></div></p></body>`,
-    heading: 'Beautiful',
+    heading: "Beautiful",
   },
 ];
 export const COMPANY_TEMPLATES = [
   {
-    templateId: '',
-    thumbnail: '',
-    style: '',
-    backgroundColor: '',
+    templateId: "",
+    thumbnail:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSABA_u6Dih7mxnm56-hIy2JQ5t7D05TvzwQQ&s",
+    style: "",
+    backgroundColor: "",
     components: `<body id="itgy"><h1 class="heading"><div class="ql-editor" contenteditable="true"><p><strong style="font-size: 25px;">Welcome to a random Template</strong></p></div></h1><p class="paragraph"><div class="ql-editor" contenteditable="true"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</p></div></p></body>`,
-    heading: 'Portfolio',
+    heading: "Portfolio",
   },
 ];
 const TEMPLATES = {

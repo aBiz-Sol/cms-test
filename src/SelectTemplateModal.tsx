@@ -7,6 +7,7 @@ export interface SelectTemplateModalProps {
   openModal: boolean;
   setOpenModal: (value: React.SetStateAction<boolean>) => void;
 }
+
 const SelectTemplateModal = ({
   openModal,
   setOpenModal,
@@ -15,74 +16,93 @@ const SelectTemplateModal = ({
     TEMPLATE_CATEGORIES.PERSONAL_PAGES
   );
   const editor = useEditor();
+
   return (
     <Modal
       open={openModal}
-      className={
-        "max-w-[1050px] bg-white w-full max-h-[580px] h-full rounded-3xl"
-      }
+      className="flex items-center justify-center px-4"
       onClose={() => {
         setOpenModal(false);
       }}
     >
-      <div className="h-full w-full flex flex-col relative pr-[80px]">
+      <div className="bg-white w-full max-w-[1050px] max-h-[580px] h-full rounded-3xl shadow-lg p-6 relative overflow-hidden">
+        {/* Close Button */}
         <Button
           variant="contained"
           onClick={() => setOpenModal(false)}
-          className="absolute right-0 inline-block p-8 border-none"
+          className="absolute px-4 py-2 text-white bg-red-500 rounded-lg top-4 right-4 hover:bg-red-600"
         >
-          ++
+          ✖
         </Button>
-        <div className="flex items-center justify-center h-full">
-          <div className="w-[30%] border-r-[1px] border-blue-207 h-full py-[80px] px-8">
+
+        <div className="flex h-full">
+          {/* Sidebar for Template Categories */}
+          <div className="w-[30%] border-r border-gray-200 h-full py-6 px-4">
             <Button
-              variant={"contained"}
-              className="flex gap-4 border-none text-gray-201"
+              variant="contained"
+              className="w-full py-3 mb-6 text-white bg-blue-500 rounded-lg shadow hover:bg-blue-600"
               onClick={() => {
                 const wrapper = editor.getWrapper();
 
                 if (wrapper) {
+                  // Clear existing components
+                  editor.DomComponents.clear();
+
+                  // Set wrapper styles (optional)
                   wrapper.setStyle({
-                    "background-color": "white",
+                    "background-color": "#ffffff",
                     "border-radius": "8px",
+                    padding: "20px",
+                    "min-height": "400px", // Ensures the blank template is visible
                   });
+
+                  // Add a blank container component
+                  editor.setComponents([
+                    {
+                      type: "text", // You can change this to any default component type
+                      content: "Your blank template is ready!",
+                      style: {
+                        "text-align": "center",
+                        "font-size": "20px",
+                        color: "#333",
+                        "margin-top": "100px",
+                      },
+                    },
+                  ]);
                 }
-                editor.setComponents("<div></div>");
               }}
             >
               + Add a Blank Template
             </Button>
 
-            <hr className="bg-blue-207 my-7" />
-            <h3 className="mb-6 text-xl font-bold text-blue-211">Templates</h3>
-            <div className="flex flex-col gap-6">
-              {Object.values(TEMPLATE_CATEGORIES).map((category) => {
-                return (
-                  <Button
-                    onClick={() => {
-                      setSelectedTab(category);
-                    }}
-                    variant="outlined"
-                    className={
-                      category === selectedTab
-                        ? "rounded-xl py-2.5 bg-blue-211 text-white"
-                        : "rounded-xl py-2.5 bg-transparent text-black hover:bg-blue-211 hover:text-white"
-                    }
-                    key={"category"}
-                  >
-                    {category}
-                  </Button>
-                );
-              })}
+            <hr className="my-6 border-gray-300" />
+            <h3 className="mb-4 text-lg font-bold text-gray-700">Templates</h3>
+            <div className="flex flex-col gap-4">
+              {Object.values(TEMPLATE_CATEGORIES).map((category) => (
+                <Button
+                  key={category}
+                  onClick={() => setSelectedTab(category)}
+                  variant="outlined"
+                  className={`py-2 rounded-lg ${
+                    category === selectedTab
+                      ? "bg-blue-500 text-white"
+                      : "bg-transparent text-gray-700 border-gray-300 hover:bg-blue-500 hover:text-white"
+                  }`}
+                >
+                  {category}
+                </Button>
+              ))}
             </div>
           </div>
-          <div className="w-full h-full px-16 py-20">
-            <div className="grid grid-cols-2 gap-4 space-x-2">
+
+          {/* Template Previews */}
+          <div className="w-[70%] h-full px-8 py-6 overflow-y-auto">
+            <div className="grid grid-cols-2 gap-6">
               {TEMPLATES[selectedTab].map((template, index) => (
                 <Button
                   variant="outlined"
                   key={index}
-                  className="hover:bg-white/70 flex border-none p-0 gap-3 flex-col items-center max-w-[279px] "
+                  className="flex flex-col items-center gap-4 p-4 border border-gray-300 rounded-lg hover:shadow-lg"
                   onClick={() => {
                     const wrapper = editor.getWrapper();
                     if (wrapper) {
@@ -92,14 +112,17 @@ const SelectTemplateModal = ({
                       });
                     }
                     editor.setComponents(template.components);
-                    //editor.setStyle(template.style);
+                    // editor.setStyle(template.style);
                   }}
                 >
                   <img
                     src={template.thumbnail}
-                    className="w-full h-[176px] rounded-3xl overflow-hidden"
+                    alt={template.heading}
+                    className="w-full h-[176px] rounded-lg object-cover"
                   />
-                  <div>{template.heading}</div>
+                  <div className="font-medium text-gray-700">
+                    {template.heading}
+                  </div>
                 </Button>
               ))}
             </div>

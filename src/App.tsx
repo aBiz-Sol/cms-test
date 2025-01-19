@@ -48,7 +48,7 @@ const gjsOptions: EditorConfig = {
   style: "body{background-color:#000000;}",
   projectData: {
     assets: [
-      "https://via.placeholder.com/350x250/78c5d6/fff",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSABA_u6Dih7mxnm56-hIy2JQ5t7D05TvzwQQ&s",
       "https://via.placeholder.com/350x250/459ba8/fff",
       "https://via.placeholder.com/350x250/79c267/fff",
       "https://via.placeholder.com/350x250/c5d647/fff",

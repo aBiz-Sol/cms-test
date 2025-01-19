@@ -1,7 +1,6 @@
 import { useEditor } from "@grapesjs/react";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import SelectTemplateModal from "./SelectTemplateModal";
-import { useEffect } from "react";
 
 const Template = () => {
   const editor = useEditor();
@@ -48,16 +47,16 @@ const Template = () => {
       {draggingStart || componentsAdded ? null : (
         <div
           key="empty-section"
-          //@ts-ignore
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          className="bg-white border border-gray-200 absolute h-[calc(100vh-72px)]  z-10 rounded-3xl p-5 flex flex-col items-center justify-center w-full gap-1"
+          className="bg-gray-50 border border-gray-300 absolute h-[calc(100vh-72px)] z-10 rounded-xl p-6 flex flex-col items-center justify-center w-full gap-4 shadow-md"
         >
-          <h1 className="font-bold"> This Page is empty</h1>
-          <p>Add a section from a template, or drag blocks from the left</p>
+          <h1 className="text-2xl font-bold text-gray-700">
+            This Page is Empty
+          </h1>
+          <p className="text-center text-gray-500">
+            Add a section from a template, or drag blocks from the left panel.
+          </p>
           <button
-            className="flex gap-2 py-4 font-semibold"
+            className="px-6 py-3 font-semibold text-white transition-all bg-blue-500 rounded-lg shadow-lg hover:bg-blue-600"
             onClick={() => {
               const components = editor.getHtml();
               const style = editor.getCss();
