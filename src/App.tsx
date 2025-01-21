@@ -68,7 +68,6 @@ export default function App() {
   const onEditor = (editor: Editor) => {
     console.log("Editor loaded");
     (window as any).editor = editor;
-
     editor.setStyle("body { background-color: blue}");
   };
 
@@ -90,7 +89,6 @@ export default function App() {
             src: "https://unpkg.com/grapesjs-rulers",
           },
           LoadOverrides,
-          ,
         ]}
         onEditor={onEditor}
       >
@@ -100,7 +98,6 @@ export default function App() {
           <RightSidebar
             className={`gjs-column-r w-[300px] border-l ${MAIN_BORDER_COLOR}`}
           />
-
           <div className="flex flex-col flex-grow gjs-column-m">
             <WithEditor>
               <Template />

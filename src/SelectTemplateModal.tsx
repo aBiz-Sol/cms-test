@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import TEMPLATES, { TEMPLATE_CATEGORIES } from "./core/Template.const";
-import { useEditor } from "@grapesjs/react";
+import { useNavigate } from "react-router-dom";
 import { Button, Modal } from "@mui/material";
+import { useEditor } from "@grapesjs/react";
 
 export interface SelectTemplateModalProps {
   openModal: boolean;
@@ -43,12 +44,11 @@ const SelectTemplateModal = ({
               className="w-full py-3 mb-6 text-white bg-blue-500 rounded-lg shadow hover:bg-blue-600"
               onClick={() => {
                 const wrapper = editor.getWrapper();
-
                 if (wrapper) {
                   // Clear existing components
                   editor.DomComponents.clear();
 
-                  // Set wrapper styles (optional)
+                  // Set wrapper styles
                   wrapper.setStyle({
                     "background-color": "#ffffff",
                     "border-radius": "8px",
@@ -59,7 +59,7 @@ const SelectTemplateModal = ({
                   // Add a blank container component
                   editor.setComponents([
                     {
-                      type: "text", // You can change this to any default component type
+                      type: "text",
                       content: "Your blank template is ready!",
                       style: {
                         "text-align": "center",
