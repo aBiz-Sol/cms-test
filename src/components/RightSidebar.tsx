@@ -25,6 +25,14 @@ import CustomLayerManager from "./CustomLayerManager";
 import CustomSelectorManager from "./CustomSelectorManager";
 import CustomStyleManager from "./CustomStyleManager";
 import CustomTraitManager from "./CustomTraitManager";
+import { AddOptions, Silenceable } from "backbone";
+import {
+  Page,
+  SetOptions,
+  PageProperties,
+  SelectableOption,
+  AbortOption,
+} from "grapesjs";
 
 const defaultTabProps = {
   className: "!min-w-0",
@@ -32,8 +40,24 @@ const defaultTabProps = {
 
 export default function RightSidebar({
   className,
-}: React.HTMLAttributes<HTMLDivElement>) {
+  pages,
+  editor,
+}: React.HTMLAttributes<HTMLDivElement> & { pages: any; editor: any }) {
   const [selectedTab, setSelectedTab] = useState(0);
+  const addPage = (props: PageProperties) => {
+    // Implement the logic to add a page here
+    console.log("Add new page with properties:", props);
+  };
+
+  const selectPage = (page: string | Page) => {
+    // Implement the logic to select a page here
+    console.log("Selected page:", page);
+  };
+
+  const removePage = (page: string | Page) => {
+    // Implement the logic to remove a page here
+    console.log("Removed page:", page);
+  };
 
   return (
     <div className={cx("gjs-right-sidebar flex flex-col", className)}>
@@ -83,9 +107,16 @@ export default function RightSidebar({
           </BlocksProvider>
         )} */}
         {selectedTab === 3 && (
-          <PagesProvider>
-            {(props) => <CustomPageManager {...props} />}
-          </PagesProvider>
+          <CustomPageManager
+            pages={pages} // Pass pages here directly
+            editor={editor} // Make sure editor is passed to CustomPageManager
+            select={selectPage}
+            add={addPage}
+            remove={removePage}
+          />
+          // <PagesProvider>
+          //   {(props) => <CustomPageManager {...props} pages={pages} />}
+          // </PagesProvider>
         )}
       </div>
     </div>
