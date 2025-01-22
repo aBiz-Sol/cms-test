@@ -33,6 +33,7 @@ const App = () => {
   const [editorInstance, setEditorInstance] = React.useState<Editor | null>(
     null
   );
+  const [selectedPage, setSelectedPage] = React.useState<any>(null);
 
   const gjsOptions: EditorConfig = {
     height: "100vh",
@@ -85,10 +86,10 @@ const App = () => {
       const loadedPages = projectData.pages || [];
       setPages(loadedPages);
 
-      // Load the components for the selected page
-      const selectedPage = projectData.pages?.find(
+      const initialPage = projectData.pages?.find(
         (page: any) => page.name === "Home page"
       );
+      setSelectedPage(initialPage);
       if (selectedPage) {
         // Ensure that selectedPage.frames is available and properly formatted
         const frames = selectedPage.frames || [];
@@ -139,6 +140,35 @@ const App = () => {
     }
   };
 
+  const loadPageContent = (page: any, editor: Editor) => {
+    // Clear previous content
+    editor.DomComponents.clear();
+
+    // Load new components for the selected page
+    if (page.frames) {
+      const components = page.frames.map((frame: any) => frame.component);
+      editor.setComponents(components);
+    }
+
+    // Apply styles if any
+    if (page.styles) {
+      editor.setStyle(page.styles);
+    }
+
+    // Load assets if any
+    if (page.assets) {
+      page.assets.forEach((asset: string) => {
+        editor.AssetManager.add(asset);
+      });
+    }
+  };
+  const handleChangePage = (page: any) => {
+    setSelectedPage(page);
+    if (editorInstance) {
+      loadPageContent(page, editorInstance);
+    }
+  };
+
   const saveTemplate = (editor: Editor) => {
     const projectData = editor.getProjectData();
     localStorage.setItem(
@@ -179,7 +209,9 @@ const App = () => {
           <RightSidebar
             editor={editorInstance}
             pages={pages}
+            handleChangePage={handleChangePage}
             className={`gjs-column-r w-[300px] border-l ${MAIN_BORDER_COLOR}`}
+            selectedPage={selectedPage}
           />
           <div className="flex flex-col flex-grow gjs-column-m">
             <WithEditor>
