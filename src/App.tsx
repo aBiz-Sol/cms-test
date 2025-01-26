@@ -34,7 +34,14 @@ const App = () => {
     null
   );
   const [selectedPage, setSelectedPage] = React.useState<any>(null);
-
+  React.useEffect(() => {
+    // Load pages from localStorage when the component mounts
+    const savedData = localStorage.getItem(`gjsProject-${projectId}`);
+    if (savedData) {
+      const projectData = JSON.parse(savedData);
+      setPages(projectData.pages || []);
+    }
+  }, [projectId]);
   const gjsOptions: EditorConfig = {
     height: "100vh",
     storageManager: {
@@ -139,28 +146,25 @@ const App = () => {
       saveTemplate(editor);
     }
   };
+  const addNewPage = () => {
+    const newPage = {
+      id: Date.now(),
+      name: `Page ${pages.length + 1}`,
+      frames: [],
+      styles: [],
+      assets: [],
+    };
+    setPages((prevPages) => [...prevPages, newPage]);
+    setSelectedPage(newPage);
+    savePages([...pages, newPage]);
+  };
 
   const loadPageContent = (page: any, editor: Editor) => {
-    // Clear previous content
     editor.DomComponents.clear();
-
-    // Load new components for the selected page
-    if (page.frames) {
-      const components = page.frames.map((frame: any) => frame.component);
-      editor.setComponents(components);
-    }
-
-    // Apply styles if any
-    if (page.styles) {
-      editor.setStyle(page.styles);
-    }
-
-    // Load assets if any
-    if (page.assets) {
-      page.assets.forEach((asset: string) => {
-        editor.AssetManager.add(asset);
-      });
-    }
+    editor.setComponents(
+      page.frames.map((frame: any) => frame.component || "")
+    );
+    editor.setStyle(page.styles || []);
   };
   const handleChangePage = (page: any) => {
     setSelectedPage(page);
@@ -168,15 +172,45 @@ const App = () => {
       loadPageContent(page, editorInstance);
     }
   };
-
-  const saveTemplate = (editor: Editor) => {
-    const projectData = editor.getProjectData();
+  const savePages = (updatedPages: any[]) => {
+    setPages(updatedPages);
+    const projectData = { pages: updatedPages };
     localStorage.setItem(
       `gjsProject-${projectId}`,
       JSON.stringify(projectData)
     );
-    console.log("Template saved:", projectData);
   };
+
+  const saveTemplate = (editor: Editor) => {
+    if (!selectedPage) {
+      console.error("No page selected to save!");
+      return;
+    }
+
+    const components = editor.getComponents();
+    const styles = editor.getStyle();
+    const assets = editor.AssetManager.getAll().map(
+      (asset: { attributes: { src: any } }) => asset.attributes.src
+    );
+
+    // Update the selected page's data
+    const updatedPages = pages.map((page) =>
+      page.id === selectedPage.id
+        ? { ...page, frames: [{ component: components }], styles, assets }
+        : page
+    );
+
+    setPages(updatedPages);
+
+    // Save to localStorage
+    const projectData = { pages: updatedPages };
+    localStorage.setItem(
+      `gjsProject-${projectId}`,
+      JSON.stringify(projectData)
+    );
+    console.log("Template saved for page:", selectedPage.name);
+  };
+
   console.log("--------", pages);
   return (
     <ThemeProvider theme={theme}>
@@ -208,6 +242,7 @@ const App = () => {
         <div className={`flex h-full border-t ${MAIN_BORDER_COLOR}`}>
           <RightSidebar
             editor={editorInstance}
+            addNewPage={addNewPage}
             pages={pages}
             handleChangePage={handleChangePage}
             className={`gjs-column-r w-[300px] border-l ${MAIN_BORDER_COLOR}`}

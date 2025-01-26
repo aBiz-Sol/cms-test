@@ -44,10 +44,12 @@ export default function RightSidebar({
   editor,
   selectedPage,
   handleChangePage,
+  addNewPage,
 }: React.HTMLAttributes<HTMLDivElement> & {
   pages: any;
   selectedPage: any;
   editor: any;
+  addNewPage: any;
   handleChangePage: any;
 }) {
   const [selectedTab, setSelectedTab] = useState(0);
@@ -118,7 +120,7 @@ export default function RightSidebar({
             pages={pages} // Pass pages here directly
             editor={editor} // Make sure editor is passed to CustomPageManager
             // select={selectPage}
-
+            addNewPage={addNewPage}
             selectedPage={selectedPage}
             handleChangePage={handleChangePage}
             // add={addPage}

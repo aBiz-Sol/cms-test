@@ -7,28 +7,14 @@ import { mdiDelete } from "@mdi/js";
 export default function CustomPageManager({
   pages,
   editor,
-  // select,
   handleChangePage,
   selectedPage,
-}: // add,
-// remove,
-any) {
-  // const addNewPage = () => {
-  //   const nextIndex = pages.length + 1;
-  //   add({
-  //     name: `New page ${nextIndex}`,
-  //     component: `<h1>Page content ${nextIndex}</h1>`,
-  //   });
-  // };
-
+  addNewPage,
+}: any) {
   return (
     <div className="gjs-custom-page-manager">
       <div className="p-2">
-        <button
-          type="button"
-          className={BTN_CLS}
-          //  onClick={addNewPage}
-        >
+        <button type="button" className={BTN_CLS} onClick={addNewPage}>
           Add new page
         </button>
       </div>
