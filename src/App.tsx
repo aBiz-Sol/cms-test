@@ -46,6 +46,8 @@ const App = () => {
     height: "100vh",
     storageManager: {
       type: "local",
+      autosave: true,
+      autoload: false,
     },
     undoManager: { trackSelection: false },
     selectorManager: { componentFirst: true },
@@ -154,9 +156,19 @@ const App = () => {
       styles: [],
       assets: [],
     };
-    setPages((prevPages) => [...prevPages, newPage]);
+
+    setPages((prevPages) => {
+      const updatedPages = [...prevPages, newPage];
+      // Save to localStorage
+      const projectData = { pages: updatedPages };
+      localStorage.setItem(
+        `gjsProject-${projectId}`,
+        JSON.stringify(projectData)
+      );
+      return updatedPages;
+    });
+
     setSelectedPage(newPage);
-    savePages([...pages, newPage]);
   };
 
   const loadPageContent = (page: any, editor: Editor) => {
@@ -165,7 +177,13 @@ const App = () => {
       page.frames.map((frame: any) => frame.component || "")
     );
     editor.setStyle(page.styles || []);
+
+    // Ensure assets are loaded when switching pages
+    page.assets.forEach((asset: string) => {
+      editor.AssetManager.add(asset);
+    });
   };
+
   const handleChangePage = (page: any) => {
     setSelectedPage(page);
     if (editorInstance) {
@@ -193,25 +211,30 @@ const App = () => {
       (asset: { attributes: { src: any } }) => asset.attributes.src
     );
 
-    // Update the selected page's data
-    const updatedPages = pages.map((page) =>
-      page.id === selectedPage.id
-        ? { ...page, frames: [{ component: components }], styles, assets }
-        : page
-    );
+    // Always refer to the latest pages state
+    setPages((prevPages) => {
+      const updatedPages = prevPages.map((page) =>
+        page.id === selectedPage.id
+          ? { ...page, frames: [{ component: components }], styles, assets }
+          : page
+      );
 
-    setPages(updatedPages);
-
-    // Save to localStorage
-    const projectData = { pages: updatedPages };
-    localStorage.setItem(
-      `gjsProject-${projectId}`,
-      JSON.stringify(projectData)
-    );
+      // Save to localStorage
+      const projectData = { pages: updatedPages };
+      localStorage.setItem(
+        `gjsProject-${projectId}`,
+        JSON.stringify(projectData)
+      );
+      return updatedPages;
+    });
     console.log("Template saved for page:", selectedPage.name);
   };
-
-  console.log("--------", pages);
+  console.log("Selected page:", selectedPage);
+  console.log("Pages array:", pages);
+  console.log(
+    "Editor components:",
+    editorInstance ? editorInstance.getComponents() : "Editor instance is null"
+  );
   return (
     <ThemeProvider theme={theme}>
       <GjsEditor
