@@ -45,12 +45,14 @@ export default function RightSidebar({
   selectedPage,
   handleChangePage,
   addNewPage,
+  handleRenamePage,
 }: React.HTMLAttributes<HTMLDivElement> & {
   pages: any;
   selectedPage: any;
   editor: any;
   addNewPage: any;
   handleChangePage: any;
+  handleRenamePage: any;
 }) {
   const [selectedTab, setSelectedTab] = useState(0);
   // const addPage = (props: PageProperties) => {
@@ -123,6 +125,7 @@ export default function RightSidebar({
             addNewPage={addNewPage}
             selectedPage={selectedPage}
             handleChangePage={handleChangePage}
+            handleRenamePage={handleRenamePage}
             // add={addPage}
             // remove={removePage}
           />

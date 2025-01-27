@@ -36,6 +36,36 @@ const Templates = () => {
     }
     setLoading(false);
   }, []);
+  const addNewTemplate = () => {
+    const newTemplateName = prompt("Enter the name for the new template:");
+    if (!newTemplateName) return; // If user cancels or doesn't provide a name, do nothing.
+
+    const newTemplate = {
+      id: Date.now(),
+      name: newTemplateName, // Set the name of the template
+      pages: [
+        {
+          id: Date.now(),
+          name: "Home page", // Default page name
+          frames: [],
+          styles: [],
+          assets: [],
+        },
+      ],
+    };
+
+    // Save the new template (template can contain multiple pages)
+    localStorage.setItem(
+      `gjsTemplate-${newTemplate.id}`,
+      JSON.stringify(newTemplate)
+    );
+
+    // Optionally, you can update the state for templates if you are keeping a list of templates
+    setTemplates((prevTemplates) => [...prevTemplates, newTemplate]);
+
+    // Automatically navigate to the newly created template (optional)
+    navigate(`/builder/${newTemplate.id}`);
+  };
 
   const handleTemplateClick = (id: string) => {
     navigate(`/builder/${id}`); // Navigate to the builder page with projectId
@@ -55,9 +85,10 @@ const Templates = () => {
   if (loading) {
     return <div>Loading templates...</div>;
   }
-  console.log("------------selected", selectedPage);
+  console.log("------------selected", templates);
   return (
     <div>
+      <button onClick={addNewTemplate}>Create New Template</button>
       <h1>Templates</h1>
       <ul>
         {templates.length > 0 ? (

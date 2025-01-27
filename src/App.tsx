@@ -241,6 +241,24 @@ const App = () => {
     });
     console.log("Template saved for page:", selectedPage.name);
   };
+
+  const handleRenamePage = (page: any) => {
+    const newPageName = prompt("Enter a new name for the page:", page.name);
+    if (newPageName && newPageName !== page.name) {
+      const updatedPages = pages.map((p) =>
+        p.id === page.id ? { ...p, name: newPageName } : p
+      );
+      setPages(updatedPages);
+
+      // Save updated page name in localStorage
+      const projectData = { pages: updatedPages };
+      localStorage.setItem(
+        `gjsProject-${projectId}`,
+        JSON.stringify(projectData)
+      );
+    }
+  };
+
   console.log("Selected page:", selectedPage);
   console.log("Pages array:", pages);
   console.log(
@@ -278,6 +296,7 @@ const App = () => {
           <RightSidebar
             editor={editorInstance}
             addNewPage={addNewPage}
+            handleRenamePage={handleRenamePage}
             pages={pages}
             handleChangePage={handleChangePage}
             className={`gjs-column-r w-[300px] border-l ${MAIN_BORDER_COLOR}`}

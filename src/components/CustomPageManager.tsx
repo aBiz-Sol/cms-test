@@ -10,6 +10,7 @@ export default function CustomPageManager({
   handleChangePage,
   selectedPage,
   addNewPage,
+  handleRenamePage,
 }: any) {
   return (
     <div className="gjs-custom-page-manager">
@@ -46,6 +47,12 @@ export default function CustomPageManager({
             >
             <Icon size={0.7} path={mdiDelete} />
           </button> */}
+          <button
+            type="button"
+            onClick={() => handleRenamePage(page)} // Trigger the rename logic
+          >
+            Rename
+          </button>
         </div>
       ))}
     </div>
