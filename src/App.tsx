@@ -39,9 +39,22 @@ const App = () => {
     const savedData = localStorage.getItem(`gjsProject-${projectId}`);
     if (savedData) {
       const projectData = JSON.parse(savedData);
-      setPages(projectData.pages || []);
+      const loadedPages = projectData.pages || [];
+      setPages(loadedPages);
+
+      // Set the first page as the selected page
+      if (loadedPages.length > 0) {
+        const firstPage = loadedPages[0];
+        setSelectedPage(firstPage);
+
+        // Load the first page's components into the editor
+        if (editorInstance && firstPage) {
+          loadPageContent(firstPage, editorInstance);
+        }
+      }
     }
-  }, [projectId]);
+  }, [projectId, editorInstance]); // Add editorInstance as dependency to ensure it's ready
+
   const gjsOptions: EditorConfig = {
     height: "100vh",
     storageManager: {
@@ -172,18 +185,17 @@ const App = () => {
   };
 
   const loadPageContent = (page: any, editor: Editor) => {
-    editor.DomComponents.clear();
+    editor.DomComponents.clear(); // Clear any existing components
     editor.setComponents(
       page.frames.map((frame: any) => frame.component || "")
-    );
-    editor.setStyle(page.styles || []);
+    ); // Set components
+    editor.setStyle(page.styles || []); // Set styles
 
     // Ensure assets are loaded when switching pages
     page.assets.forEach((asset: string) => {
-      editor.AssetManager.add(asset);
+      editor.AssetManager.add(asset); // Add each asset to the editor
     });
   };
-
   const handleChangePage = (page: any) => {
     setSelectedPage(page);
     if (editorInstance) {

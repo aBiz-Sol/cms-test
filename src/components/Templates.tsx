@@ -5,6 +5,7 @@ const Templates = () => {
   const navigate = useNavigate();
   const [templates, setTemplates] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedPage, setSelectedPage] = useState<any>(null);
 
   // Load templates from localStorage
   useEffect(() => {
@@ -36,14 +37,25 @@ const Templates = () => {
     setLoading(false);
   }, []);
 
-  const handleTemplateClick = (id: any) => {
+  const handleTemplateClick = (id: string) => {
     navigate(`/builder/${id}`); // Navigate to the builder page with projectId
+
+    // After navigating, load the first page by default
+    const savedData = localStorage.getItem(`gjsProject-${id}`);
+    if (savedData) {
+      const projectData = JSON.parse(savedData);
+      const firstPage = projectData.pages?.[0]; // Get the first page of the project
+      if (firstPage) {
+        // Set the first page as the selected one
+        setSelectedPage(firstPage);
+      }
+    }
   };
 
   if (loading) {
     return <div>Loading templates...</div>;
   }
-
+  console.log("------------selected", selectedPage);
   return (
     <div>
       <h1>Templates</h1>
