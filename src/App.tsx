@@ -46,9 +46,14 @@ const App = () => {
         const projectData = JSON.parse(savedData);
         setPages(projectData.pages || []);
 
-        // Set the first page as the selected page
+        // Automatically select the first page (if exists)
         if (projectData.pages?.length > 0) {
-          setSelectedPage(projectData.pages[0]);
+          const firstPage = projectData.pages[0]; // Select the first page
+          console.log("---------------------------------", firstPage);
+          setSelectedPage(firstPage);
+
+          // Load the content of the first page
+          loadPageContent(firstPage);
         }
       }
     }
@@ -124,9 +129,7 @@ const App = () => {
       const loadedPages = projectData.pages || [];
       setPages(loadedPages);
 
-      const initialPage = projectData.pages?.find(
-        (page: any) => page.name === "Home page"
-      );
+      const initialPage = projectData.pages[0];
       setSelectedPage(initialPage);
       if (selectedPage) {
         // Ensure that selectedPage.frames is available and properly formatted

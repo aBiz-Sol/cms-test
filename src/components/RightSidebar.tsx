@@ -54,7 +54,16 @@ export default function RightSidebar({
   handleChangePage: any;
   handleRenamePage: any;
 }) {
-  const [selectedTab, setSelectedTab] = useState(0);
+  // Set default selected tab to 3 (Pages tab)
+  const [selectedTab, setSelectedTab] = useState(3);
+
+  React.useEffect(() => {
+    // Automatically select the Pages tab when the component mounts
+    if (pages && selectedPage) {
+      setSelectedTab(3); // Set tab to 'Pages' by default
+    }
+  }, [pages, selectedPage]);
+
   // const addPage = (props: PageProperties) => {
   //   // Implement the logic to add a page here
   //   console.log("Add new page with properties:", props);
