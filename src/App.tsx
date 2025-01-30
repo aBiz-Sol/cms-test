@@ -83,15 +83,14 @@ const App = () => {
       styles: ["./style.css"],
     },
     style: "body { background-color: #000000; }",
-    projectData: {
-      assets: [
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSABA_u6Dih7mxnm56-hIy2JQ5t7D05TvzwQQ&s",
-        "https://via.placeholder.com/350x250/459ba8/fff",
-        "https://via.placeholder.com/350x250/79c267/fff",
-        "https://via.placeholder.com/350x250/c5d647/fff",
-        "https://via.placeholder.com/350x250/f28c33/fff",
-      ],
-    },
+    // projectData: {
+    //   assets: [
+    //     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSABA_u6Dih7mxnm56-hIy2JQ5t7D05TvzwQQ&s",
+    //     "https://via.placeholder.com/350x250/459ba8/fff",
+    //     "https://via.placeholder.com/350x250/79c267/fff",
+    //     "https://via.placeholder.com/350x250/c5d647/fff",
+    //     "https://via.placeholder.com/350x250/f28c33/fff",
+    //   ],
     //   content: "<h1>GrapesJS React Custom UI</h1>",
     //   // pages: [
     //   //   {
@@ -204,11 +203,9 @@ const App = () => {
 
   const loadPageContent = (page: any, editor: Editor) => {
     editor.DomComponents.clear(); // Clear any existing components
-
-    // Ensure that frames is an array before using it
-    const frames = page.frames || [];
-
-    editor.setComponents(frames.map((frame: any) => frame.component || "")); // Set components
+    editor.setComponents(
+      page.frames.map((frame: any) => frame.component || "")
+    ); // Set components
     editor.setStyle(page.styles || []); // Set styles
 
     // Ensure assets are loaded when switching pages
@@ -216,7 +213,6 @@ const App = () => {
       editor.AssetManager.add(asset); // Add each asset to the editor
     });
   };
-
   const handleChangePage = (page: any) => {
     setSelectedPage(page);
     if (editorInstance) {
@@ -380,7 +376,6 @@ const App = () => {
           },
           LoadOverrides,
         ]}
-        waitReady
         onEditor={onEditor}
       >
         <Topbar className="min-h-[48px] bg-[#555]" />
