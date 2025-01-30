@@ -21,16 +21,15 @@ const Templates = () => {
       for (let i = 0; i < localStorage.length; i++) {
         const key = localStorage.key(i);
         if (key && key.startsWith("gjsProject-")) {
-          // Change "template-" to "gjsProject-"
           const projectData = localStorage.getItem(key);
           console.log("projectData", projectData);
           if (projectData) {
             try {
               const parsedData = JSON.parse(projectData);
-              const templateName =
-                parsedData?.pages?.[0]?.name || `Unnamed Project ${key}`;
+              // Use the template's name property instead of the first page's name
+              const templateName = parsedData?.name || `Unnamed Project ${key}`;
               loadedTemplates.push({
-                id: key.replace("gjsProject-", ""), // Change "template-" to "gjsProject-"
+                id: key.replace("gjsProject-", ""),
                 name: templateName,
               });
             } catch (error) {
@@ -54,14 +53,14 @@ const Templates = () => {
 
     const newTemplate = {
       id: Date.now().toString(), // Unique ID
-      name: newTemplateName,
+      name: newTemplateName, // Use the template's name property
       pages: [
         {
           id: "page1",
           name: "Home Page",
-          frames: [], // Predefined components
-          styles: [], // Predefined styles
-          assets: [], // Predefined assets
+          frames: [{ component: [] }], // Ensure frames is an array with a component property
+          styles: [],
+          assets: [],
         },
       ],
     };
@@ -73,7 +72,7 @@ const Templates = () => {
     );
 
     // Update the templates list
-    setTemplates((prev: any) => [...prev, newTemplate]);
+    setTemplates((prev) => [...prev, newTemplate]);
 
     // Navigate to the new template/project
     navigate(`/builder/${newTemplate.id}`);

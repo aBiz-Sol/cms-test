@@ -196,10 +196,67 @@ const App = () => {
       assets: [],
     };
 
-    const updatedPages = [...pages, newPage];
-    setPages(updatedPages);
-    saveProject(updatedPages);
-    setSelectedPage(newPage);
+    // Retrieve the existing template data from localStorage
+    const existingTemplateData = localStorage.getItem(
+      `gjsProject-${projectId}`
+    );
+
+    if (!existingTemplateData) {
+      // No project data in localStorage, creating a new project
+
+      // Initialize a new template data structure
+      const newProjectData = {
+        id: projectId, // Using the projectId passed from the URL or params
+        name: `Project ${projectId}`, // Or you can give it a default name
+        pages: [newPage], // Starting with just the new page
+      };
+
+      // Save the new template data to localStorage
+      localStorage.setItem(
+        `gjsProject-${projectId}`,
+        JSON.stringify(newProjectData)
+      );
+
+      // Set the newly created page as the selected page
+      setPages([newPage]);
+      setSelectedPage(newPage);
+
+      console.log(
+        `New page added: ${newPage.name} (First time project creation)`
+      );
+    } else {
+      // Project data exists, load the existing template
+
+      let parsedTemplateData: any;
+      try {
+        parsedTemplateData = JSON.parse(existingTemplateData);
+      } catch (error) {
+        console.error("Error parsing template data:", error);
+        return;
+      }
+
+      // Add the new page to the existing pages array
+      const updatedPages = [...pages, newPage];
+      setPages(updatedPages);
+
+      // Preserve the template's name and ID while updating the pages
+      const projectData = {
+        id: parsedTemplateData.id, // Keep the template ID
+        name: parsedTemplateData.name, // Keep the template name
+        pages: updatedPages, // Update the pages array with the new page
+      };
+
+      // Save the updated template data back to localStorage
+      localStorage.setItem(
+        `gjsProject-${projectId}`,
+        JSON.stringify(projectData)
+      );
+
+      // Optionally, set the newly added page as the selected page
+      setSelectedPage(newPage);
+
+      console.log(`New page added: ${newPage.name}`);
+    }
   };
 
   const loadPageContent = (page: any) => {
@@ -249,7 +306,25 @@ const App = () => {
       (asset: { attributes: { src: any } }) => asset.attributes.src
     );
 
-    // Always refer to the latest pages state
+    // Retrieve the existing template data from localStorage
+    const existingTemplateData = localStorage.getItem(
+      `gjsProject-${projectId}`
+    );
+    if (!existingTemplateData) {
+      console.error("No existing template found in localStorage.");
+      return;
+    }
+
+    // Parse the existing template data
+    let parsedTemplateData: any;
+    try {
+      parsedTemplateData = JSON.parse(existingTemplateData);
+    } catch (error) {
+      console.error("Error parsing template data:", error);
+      return;
+    }
+
+    // Update the pages array while preserving the template name
     setPages((prevPages) => {
       const updatedPages = prevPages.map((page) =>
         page.id === selectedPage.id
@@ -257,33 +332,66 @@ const App = () => {
           : page
       );
 
-      // Save to localStorage
-      const projectData = { pages: updatedPages };
+      // Preserve the template's name and id, while updating the pages
+      const projectData = {
+        id: parsedTemplateData.id, // Keep the template ID
+        name: parsedTemplateData.name, // Keep the template name
+        pages: updatedPages, // Update only the pages
+      };
+
+      // Save the updated template data back to localStorage
       localStorage.setItem(
         `gjsProject-${projectId}`,
         JSON.stringify(projectData)
       );
+
       return updatedPages;
     });
+
     console.log("Template saved for page:", selectedPage.name);
   };
 
   const handleRenamePage = (page: any) => {
     const newPageName = prompt("Enter a new name for the page:", page.name);
+
     if (newPageName && newPageName !== page.name) {
       const updatedPages = pages.map((p) =>
         p.id === page.id ? { ...p, name: newPageName } : p
       );
       setPages(updatedPages);
 
-      // Save updated page name in localStorage
-      const projectData = { pages: updatedPages };
+      // Retrieve the existing project data from localStorage
+      const existingTemplateData = localStorage.getItem(
+        `gjsProject-${projectId}`
+      );
+      if (!existingTemplateData) {
+        console.error("No existing project data found in localStorage.");
+        return;
+      }
+
+      let parsedTemplateData: any;
+      try {
+        parsedTemplateData = JSON.parse(existingTemplateData);
+      } catch (error) {
+        console.error("Error parsing template data:", error);
+        return;
+      }
+
+      // Preserve the project name and ID while updating the pages
+      const projectData = {
+        id: parsedTemplateData.id, // Keep the template ID
+        name: parsedTemplateData.name, // Keep the template name
+        pages: updatedPages, // Update the pages array with the renamed page
+      };
+
+      // Save the updated project data back to localStorage
       localStorage.setItem(
         `gjsProject-${projectId}`,
         JSON.stringify(projectData)
       );
     }
   };
+
   if (editorInstance) {
     editorInstance.on("run:preview", () => {
       // Get HTML and CSS content from the editor
