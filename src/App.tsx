@@ -40,32 +40,31 @@ const App = () => {
   );
   const [selectedPage, setSelectedPage] = React.useState<any>(null);
   React.useEffect(() => {
-    // Load pages from localStorage when the component mounts
-    const savedData = localStorage.getItem(`gjsProject-${projectId}`);
-    if (savedData) {
-      const projectData = JSON.parse(savedData);
-      const loadedPages = projectData.pages || [];
-      setPages(loadedPages);
+    if (projectId) {
+      const savedData = localStorage.getItem(`gjsProject-${projectId}`);
+      if (savedData) {
+        const projectData = JSON.parse(savedData);
+        setPages(projectData.pages || []);
 
-      // Set the first page as the selected page
-      if (loadedPages.length > 0) {
-        const firstPage = loadedPages[0];
-        setSelectedPage(firstPage);
-
-        // Load the first page's components into the editor
-        if (editorInstance && firstPage) {
-          loadPageContent(firstPage, editorInstance);
+        // Set the first page as the selected page
+        if (projectData.pages?.length > 0) {
+          setSelectedPage(projectData.pages[0]);
         }
       }
     }
-  }, [projectId, editorInstance]); // Add editorInstance as dependency to ensure it's ready
+  }, [projectId]);
 
+  React.useEffect(() => {
+    if (editorInstance && selectedPage) {
+      loadPageContent(selectedPage);
+    }
+  }, [selectedPage, editorInstance]);
   const gjsOptions: EditorConfig = {
     height: "100vh",
     storageManager: {
       type: "local",
-      autosave: true,
-      autoload: false,
+      autosave: false,
+      autoload: true,
     },
     undoManager: { trackSelection: false },
     selectorManager: { componentFirst: true },
@@ -178,45 +177,55 @@ const App = () => {
       saveTemplate(editor);
     }
   };
+  const saveProject = (updatedPages: any[]) => {
+    if (projectId) {
+      const projectData = { id: projectId, pages: updatedPages };
+      localStorage.setItem(
+        `gjsProject-${projectId}`,
+        JSON.stringify(projectData)
+      );
+    }
+  };
+
   const addNewPage = () => {
     const newPage = {
-      id: Date.now(),
+      id: Date.now().toString(),
       name: `Page ${pages.length + 1}`,
       frames: [],
       styles: [],
       assets: [],
     };
 
-    setPages((prevPages) => {
-      const updatedPages = [...prevPages, newPage];
-      // Save to localStorage
-      const projectData = { pages: updatedPages };
-      localStorage.setItem(
-        `gjsProject-${projectId}`,
-        JSON.stringify(projectData)
-      );
-      return updatedPages;
-    });
-
+    const updatedPages = [...pages, newPage];
+    setPages(updatedPages);
+    saveProject(updatedPages);
     setSelectedPage(newPage);
   };
 
-  const loadPageContent = (page: any, editor: Editor) => {
-    editor.DomComponents.clear(); // Clear any existing components
-    editor.setComponents(
-      page.frames.map((frame: any) => frame.component || "")
-    ); // Set components
-    editor.setStyle(page.styles || []); // Set styles
+  const loadPageContent = (page: any) => {
+    if (editorInstance) {
+      // Clear the editor before loading new content
+      editorInstance.DomComponents.clear();
 
-    // Ensure assets are loaded when switching pages
-    page.assets.forEach((asset: string) => {
-      editor.AssetManager.add(asset); // Add each asset to the editor
-    });
+      // Load components from the selected page
+      const components = page.frames?.[0]?.component || [];
+      editorInstance.setComponents(components);
+
+      // Load styles from the selected page
+      const styles = page.styles || [];
+      editorInstance.setStyle(styles);
+
+      // Load assets from the selected page
+      page.assets.forEach((asset: string) => {
+        editorInstance.AssetManager.add(asset);
+      });
+    }
   };
+
   const handleChangePage = (page: any) => {
     setSelectedPage(page);
     if (editorInstance) {
-      loadPageContent(page, editorInstance);
+      loadPageContent(page);
     }
   };
   const savePages = (updatedPages: any[]) => {

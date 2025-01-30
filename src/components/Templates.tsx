@@ -1,27 +1,36 @@
-import React, { useEffect, useState } from "react";
+import {
+  Key,
+  ReactElement,
+  JSXElementConstructor,
+  ReactNode,
+  ReactPortal,
+  useEffect,
+  useState,
+} from "react";
 import { useNavigate } from "react-router-dom";
 
 const Templates = () => {
   const navigate = useNavigate();
   const [templates, setTemplates] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedPage, setSelectedPage] = useState<any>(null);
 
-  // Load templates from localStorage
+  // Load all projects/templates from localStorage
   useEffect(() => {
     const loadedTemplates = [];
     try {
       for (let i = 0; i < localStorage.length; i++) {
         const key = localStorage.key(i);
         if (key && key.startsWith("gjsProject-")) {
+          // Change "template-" to "gjsProject-"
           const projectData = localStorage.getItem(key);
+          console.log("projectData", projectData);
           if (projectData) {
             try {
               const parsedData = JSON.parse(projectData);
               const templateName =
                 parsedData?.pages?.[0]?.name || `Unnamed Project ${key}`;
               loadedTemplates.push({
-                id: key.split("-")[1],
+                id: key.replace("gjsProject-", ""), // Change "template-" to "gjsProject-"
                 name: templateName,
               });
             } catch (error) {
@@ -30,86 +39,82 @@ const Templates = () => {
           }
         }
       }
+      console.log("Loaded templates:", loadedTemplates);
       setTemplates(loadedTemplates);
     } catch (error) {
       console.error("Error accessing localStorage:", error);
     }
     setLoading(false);
   }, []);
+
+  // Create a new template (project with predefined content)
   const addNewTemplate = () => {
     const newTemplateName = prompt("Enter the name for the new template:");
-    if (!newTemplateName) return; // If user cancels or doesn't provide a name, do nothing.
+    if (!newTemplateName) return;
 
     const newTemplate = {
-      id: Date.now(),
-      name: newTemplateName, // Set the name of the template
+      id: Date.now().toString(), // Unique ID
+      name: newTemplateName,
       pages: [
         {
-          id: Date.now(),
-          name: "Home page", // Default page name
-          frames: [],
-          styles: [],
-          assets: [],
+          id: "page1",
+          name: "Home Page",
+          frames: [], // Predefined components
+          styles: [], // Predefined styles
+          assets: [], // Predefined assets
         },
       ],
     };
 
-    // Save the new template (template can contain multiple pages)
+    // Save the new template/project
     localStorage.setItem(
-      `gjsTemplate-${newTemplate.id}`,
+      `gjsProject-${newTemplate.id}`,
       JSON.stringify(newTemplate)
     );
 
-    // Optionally, you can update the state for templates if you are keeping a list of templates
-    setTemplates((prevTemplates) => [...prevTemplates, newTemplate]);
+    // Update the templates list
+    setTemplates((prev: any) => [...prev, newTemplate]);
 
-    // Automatically navigate to the newly created template (optional)
+    // Navigate to the new template/project
     navigate(`/builder/${newTemplate.id}`);
   };
 
+  // Handle template/project selection
   const handleTemplateClick = (id: string) => {
-    navigate(`/builder/${id}`); // Navigate to the builder page with projectId
-
-    // After navigating, load the first page by default
-    const savedData = localStorage.getItem(`gjsProject-${id}`);
-    if (savedData) {
-      const projectData = JSON.parse(savedData);
-      const firstPage = projectData.pages?.[0]; // Get the first page of the project
-      if (firstPage) {
-        // Set the first page as the selected one
-        setSelectedPage(firstPage);
-      }
-    }
+    navigate(`/builder/${id}`);
   };
 
   if (loading) {
     return <div>Loading templates...</div>;
   }
-  console.log("------------selected", templates);
+
   return (
     <div>
       <button onClick={addNewTemplate}>Create New Template</button>
       <h1>Templates</h1>
       <ul>
         {templates.length > 0 ? (
-          templates.map((template) => (
-            <li key={template.id}>
-              <button
-                onClick={() => handleTemplateClick(template.id)}
-                style={{
-                  marginTop: "10px",
-                  backgroundColor: "#007BFF",
-                  color: "white",
-                  padding: "8px 16px",
-                  border: "none",
-                  borderRadius: "4px",
-                  cursor: "pointer",
-                }}
-              >
-                {template.name}
-              </button>
-            </li>
-          ))
+          templates.map((template: { id: any; name: any }) => {
+            console.log(template);
+            return (
+              <li key={template.id}>
+                <button
+                  onClick={() => handleTemplateClick(template.id as string)}
+                  style={{
+                    marginTop: "10px",
+                    backgroundColor: "#007BFF",
+                    color: "white",
+                    padding: "8px 16px",
+                    border: "none",
+                    borderRadius: "4px",
+                    cursor: "pointer",
+                  }}
+                >
+                  {template.name}
+                </button>
+              </li>
+            );
+          })
         ) : (
           <li>No templates found. Add a new template!</li>
         )}
