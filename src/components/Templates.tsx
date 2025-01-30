@@ -97,6 +97,7 @@ const Templates = () => {
               <button
                 onClick={() => handleTemplateClick(template.id)}
                 style={{
+                  marginTop: "10px",
                   backgroundColor: "#007BFF",
                   color: "white",
                   padding: "8px 16px",

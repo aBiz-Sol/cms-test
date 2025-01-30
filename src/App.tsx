@@ -30,6 +30,11 @@ const App = () => {
   console.log(projectId);
   const navigate = useNavigate();
   const [pages, setPages] = React.useState<any[]>([]);
+  const [previewOpen, setPreviewOpen] = React.useState(false);
+  const [previewContent, setPreviewContent] = React.useState({
+    html: "",
+    css: "",
+  });
   const [editorInstance, setEditorInstance] = React.useState<Editor | null>(
     null
   );
@@ -78,14 +83,15 @@ const App = () => {
       styles: ["./style.css"],
     },
     style: "body { background-color: #000000; }",
-    // projectData: {
-    //   assets: [
-    //     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSABA_u6Dih7mxnm56-hIy2JQ5t7D05TvzwQQ&s",
-    //     "https://via.placeholder.com/350x250/459ba8/fff",
-    //     "https://via.placeholder.com/350x250/79c267/fff",
-    //     "https://via.placeholder.com/350x250/c5d647/fff",
-    //     "https://via.placeholder.com/350x250/f28c33/fff",
-    //   ],
+    projectData: {
+      assets: [
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSABA_u6Dih7mxnm56-hIy2JQ5t7D05TvzwQQ&s",
+        "https://via.placeholder.com/350x250/459ba8/fff",
+        "https://via.placeholder.com/350x250/79c267/fff",
+        "https://via.placeholder.com/350x250/c5d647/fff",
+        "https://via.placeholder.com/350x250/f28c33/fff",
+      ],
+    },
     //   content: "<h1>GrapesJS React Custom UI</h1>",
     //   // pages: [
     //   //   {
@@ -95,10 +101,22 @@ const App = () => {
     //   // ],
     // },
   };
+
   const onEditor = (editor: Editor) => {
     console.log("Editor loaded");
     (window as any).editor = editor;
     setEditorInstance(editor);
+    editor.DomComponents.addType("header", {
+      isComponent: (el) => el.tagName === "HEADER",
+      model: {
+        defaults: {
+          editable: false, // Prevent editing
+          draggable: true, // Allow dragging
+          droppable: true, // Prevent dropping other components inside
+          attributes: { class: "non-editable-header" }, // Add a class for styling
+        },
+      },
+    });
 
     // Load the project data based on projectId
     const savedData = localStorage.getItem(`gjsProject-${projectId}`);
@@ -186,9 +204,11 @@ const App = () => {
 
   const loadPageContent = (page: any, editor: Editor) => {
     editor.DomComponents.clear(); // Clear any existing components
-    editor.setComponents(
-      page.frames.map((frame: any) => frame.component || "")
-    ); // Set components
+
+    // Ensure that frames is an array before using it
+    const frames = page.frames || [];
+
+    editor.setComponents(frames.map((frame: any) => frame.component || "")); // Set components
     editor.setStyle(page.styles || []); // Set styles
 
     // Ensure assets are loaded when switching pages
@@ -196,6 +216,7 @@ const App = () => {
       editor.AssetManager.add(asset); // Add each asset to the editor
     });
   };
+
   const handleChangePage = (page: any) => {
     setSelectedPage(page);
     if (editorInstance) {
@@ -258,6 +279,82 @@ const App = () => {
       );
     }
   };
+  if (editorInstance) {
+    editorInstance.on("run:preview", () => {
+      // Get HTML and CSS content from the editor
+      const htmlContent = editorInstance.getHtml();
+      const cssContent = editorInstance.getCss();
+
+      if (!htmlContent || !cssContent) {
+        console.error("HTML or CSS content missing!");
+        return;
+      }
+
+      // Navigate to the preview route with HTML and CSS as state
+      navigate("/preview", {
+        state: { html: htmlContent, css: cssContent },
+      });
+    });
+  }
+
+  const renderPublishedTemplate = (projectId: string) => {
+    if (editorInstance) {
+      const pages = editorInstance.Pages;
+
+      const selectedPage = pages.getSelected();
+      if (!selectedPage) {
+        console.error("No selected page to render!");
+        return;
+      }
+
+      const html = editorInstance.getHtml();
+      const css = editorInstance.getCss();
+
+      if (!html || !css) {
+        console.error("HTML or CSS content missing!");
+        return;
+      }
+
+      // Add the JavaScript to handle dropdown toggle in the preview
+      const script = `
+        <script>
+          document.addEventListener('DOMContentLoaded', function() {
+            const dropdownBtn = document.getElementById('dropdownNavbarLink');
+            const dropdownMenu = document.getElementById('dropdownNavbar');
+            if (dropdownBtn && dropdownMenu) {
+              dropdownBtn.addEventListener('click', function() {
+                dropdownMenu.classList.toggle('hidden');
+              });
+            }
+          });
+        </script>
+      `;
+
+      // Combine the HTML, CSS, and the new script
+      const renderedTemplate = `
+        <!DOCTYPE html>
+        <html>
+          <head>
+            <style>${css}</style>
+          </head>
+          <body>${html}</body>
+          ${script}
+        </html>
+      `;
+
+      const newWindow = window.open();
+      newWindow?.document.write(renderedTemplate);
+      newWindow?.document.close();
+    } else {
+      console.error("Editor instance not found!");
+    }
+  };
+
+  const handleRenderClick = () => {
+    if (projectId) {
+      renderPublishedTemplate(projectId);
+    }
+  };
 
   console.log("Selected page:", selectedPage);
   console.log("Pages array:", pages);
@@ -283,14 +380,21 @@ const App = () => {
           },
           LoadOverrides,
         ]}
+        waitReady
         onEditor={onEditor}
       >
         <Topbar className="min-h-[48px] bg-[#555]" />
+        <button onClick={handleRenderClick} className="render-button">
+          Render Template
+        </button>
         <div className="save-button-container">
           <button onClick={handleSaveClick} className="save-button">
             Save Template
           </button>
         </div>
+        <button onClick={() => editorInstance?.runCommand("preview")}>
+          Preview Template
+        </button>
 
         <div className={`flex h-full border-t ${MAIN_BORDER_COLOR}`}>
           <RightSidebar
