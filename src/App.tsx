@@ -18,6 +18,8 @@ import LoadOverrides from "./components/Overrides";
 import LeftSidebar from "./components/LeftSidebar";
 import Template from "./Template";
 import { useNavigate, useParams } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const theme = createTheme({
   palette: {
@@ -121,6 +123,7 @@ const App = () => {
     const editor = (window as any).editor;
     if (editor) {
       saveTemplate(editor);
+      toast.success("Template saved successfully 🚀");
     }
   };
 
@@ -182,6 +185,7 @@ const App = () => {
 
     setPages(updatedPages);
     setSelectedPage(newPage);
+    toast.success("New page added successfully!");
   };
 
   const loadPageContent = (page: any) => {
@@ -224,6 +228,7 @@ const App = () => {
 
   const saveTemplate = (editor: Editor) => {
     if (!selectedPage) {
+      toast.error("No page selected to save!"); // Error toast
       console.error("No page selected to save!");
       return;
     }
@@ -239,6 +244,7 @@ const App = () => {
       `gjsProject-${projectId}`
     );
     if (!existingTemplateData) {
+      toast.error("No existing template found in localStorage."); // Error toast
       console.error("No existing template found in localStorage.");
       return;
     }
@@ -248,6 +254,7 @@ const App = () => {
       parsedTemplateData = JSON.parse(existingTemplateData);
     } catch (error) {
       console.error("Error parsing template data:", error);
+      toast.error("Error parsing template data!"); // Error toast
       return;
     }
 
@@ -269,7 +276,7 @@ const App = () => {
       `gjsProject-${projectId}`,
       JSON.stringify(projectData)
     );
-
+    toast.success("Template saved for page!"); // Success toast
     console.log("Template saved for page:", selectedPage.name);
   };
 
@@ -344,6 +351,7 @@ const App = () => {
       const newWindow = window.open();
       newWindow?.document.write(renderedTemplate);
       newWindow?.document.close();
+      toast.info("Rendered template in new window!");
     }
   };
 
@@ -434,6 +442,7 @@ const App = () => {
           )}
         </AssetsProvider>
       </GjsEditor>
+      <ToastContainer />
     </ThemeProvider>
   );
 };
