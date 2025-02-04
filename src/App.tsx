@@ -39,37 +39,33 @@ const App = () => {
     null
   );
   const [selectedPage, setSelectedPage] = React.useState<any>(null);
+
   React.useEffect(() => {
     if (projectId) {
       const savedData = localStorage.getItem(`gjsProject-${projectId}`);
       if (savedData) {
         const projectData = JSON.parse(savedData);
         setPages(projectData.pages || []);
-
-        // Automatically select the first page (if exists)
         if (projectData.pages?.length > 0) {
-          const firstPage = projectData.pages[0]; // Select the first page
-          console.log("---------------------------------", firstPage);
-          setSelectedPage(firstPage);
-
-          // Load the content of the first page
-          loadPageContent(firstPage);
+          const firstPage = projectData.pages[0];
+          setSelectedPage(firstPage); // Set selected page after loading
         }
       }
     }
   }, [projectId]);
 
   React.useEffect(() => {
-    if (editorInstance && selectedPage) {
-      loadPageContent(selectedPage);
+    if (selectedPage && editorInstance) {
+      loadPageContent(selectedPage); // Ensure page content loads after selection
     }
   }, [selectedPage, editorInstance]);
+
   const gjsOptions: EditorConfig = {
     height: "100vh",
     storageManager: {
       type: "local",
       autosave: false,
-      autoload: true,
+      autoload: false,
     },
     undoManager: { trackSelection: false },
     selectorManager: { componentFirst: true },
@@ -87,28 +83,27 @@ const App = () => {
       styles: ["./style.css"],
     },
     style: "body { background-color: #000000; }",
-    // projectData: {
-    //   assets: [
-    //     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSABA_u6Dih7mxnm56-hIy2JQ5t7D05TvzwQQ&s",
-    //     "https://via.placeholder.com/350x250/459ba8/fff",
-    //     "https://via.placeholder.com/350x250/79c267/fff",
-    //     "https://via.placeholder.com/350x250/c5d647/fff",
-    //     "https://via.placeholder.com/350x250/f28c33/fff",
-    //   ],
-    //   content: "<h1>GrapesJS React Custom UI</h1>",
-    //   // pages: [
-    //   //   {
-    //   //     name: "Home page",
-    //   //     component: `<h1>GrapesJS React Custom UI</h1>`,
-    //   //   },
-    //   // ],
-    // },
   };
 
   const onEditor = (editor: Editor) => {
     console.log("Editor loaded");
     (window as any).editor = editor;
     setEditorInstance(editor);
+
+    // Load the project data based on projectId
+    const savedData = localStorage.getItem(`gjsProject-${projectId}`);
+    if (savedData) {
+      const projectData = JSON.parse(savedData);
+      const loadedPages = projectData.pages || [];
+      setPages(loadedPages);
+
+      const initialPage = projectData.pages[0];
+      setSelectedPage(initialPage);
+
+      // Load components, styles, and assets for the editor instance
+      loadPageContent(initialPage);
+    }
+
     editor.DomComponents.addType("header", {
       isComponent: (el) => el.tagName === "HEADER",
       model: {
@@ -116,62 +111,10 @@ const App = () => {
           editable: false, // Prevent editing
           draggable: true, // Allow dragging
           droppable: true, // Prevent dropping other components inside
-          attributes: { class: "non-editable-header" }, // Add a class for styling
+          attributes: { class: "non-editable-header" },
         },
       },
     });
-
-    // Load the project data based on projectId
-    const savedData = localStorage.getItem(`gjsProject-${projectId}`);
-    if (savedData) {
-      const projectData = JSON.parse(savedData);
-      console.log("projectData loaded", projectData);
-      const loadedPages = projectData.pages || [];
-      setPages(loadedPages);
-
-      const initialPage = projectData.pages[0];
-      setSelectedPage(initialPage);
-      if (selectedPage) {
-        // Ensure that selectedPage.frames is available and properly formatted
-        const frames = selectedPage.frames || [];
-        if (frames.length > 0) {
-          // Pass the components from the frames to the editor
-          const pageComponents = frames.map((frame: any) => frame.component);
-          editor.setComponents(pageComponents);
-        }
-      }
-
-      // Load styles (if any)
-      if (projectData?.styles) {
-        console.log("Applying styles:", projectData.styles);
-        editor.setStyle(projectData.styles);
-      }
-
-      // Load assets (if any)
-      if (projectData?.assets) {
-        console.log("Adding assets:", projectData.assets);
-        projectData.assets.forEach((asset: string) => {
-          editor.AssetManager.add(asset);
-        });
-      }
-    } else {
-      console.log("No project data found for this projectId:", projectId);
-    }
-    const wrapper = editor.getWrapper();
-    // Get the HTML and CSS from the editor
-    if (wrapper) {
-      // Clear existing components
-      editor.DomComponents.clear();
-    }
-
-    const htmlContent = editor.getHtml(); // Get the HTML content
-    const cssContent = editor.getCss(); // Get the CSS styles
-
-    // Log the HTML and CSS content to the console
-    console.log("HTML Content:", htmlContent);
-    console.log("CSS Content:", cssContent);
-    editor.setComponents(htmlContent);
-    editor.setStyle(cssContent);
   };
 
   const handleSaveClick = () => {
@@ -180,6 +123,7 @@ const App = () => {
       saveTemplate(editor);
     }
   };
+
   const saveProject = (updatedPages: any[]) => {
     if (projectId) {
       const projectData = { id: projectId, pages: updatedPages };
@@ -199,38 +143,24 @@ const App = () => {
       assets: [],
     };
 
-    // Retrieve the existing template data from localStorage
     const existingTemplateData = localStorage.getItem(
       `gjsProject-${projectId}`
     );
 
+    let updatedPages;
     if (!existingTemplateData) {
-      // No project data in localStorage, creating a new project
-
-      // Initialize a new template data structure
       const newProjectData = {
-        id: projectId, // Using the projectId passed from the URL or params
-        name: `Project ${projectId}`, // Or you can give it a default name
-        pages: [newPage], // Starting with just the new page
+        id: projectId,
+        name: `Project ${projectId}`,
+        pages: [newPage],
       };
-
-      // Save the new template data to localStorage
       localStorage.setItem(
         `gjsProject-${projectId}`,
         JSON.stringify(newProjectData)
       );
-
-      // Set the newly created page as the selected page
-      setPages([newPage]);
-      setSelectedPage(newPage);
-
-      console.log(
-        `New page added: ${newPage.name} (First time project creation)`
-      );
+      updatedPages = [newPage];
     } else {
-      // Project data exists, load the existing template
-
-      let parsedTemplateData: any;
+      let parsedTemplateData;
       try {
         parsedTemplateData = JSON.parse(existingTemplateData);
       } catch (error) {
@@ -238,47 +168,50 @@ const App = () => {
         return;
       }
 
-      // Add the new page to the existing pages array
-      const updatedPages = [...pages, newPage];
-      setPages(updatedPages);
-
-      // Preserve the template's name and ID while updating the pages
+      updatedPages = [...pages, newPage];
       const projectData = {
-        id: parsedTemplateData.id, // Keep the template ID
-        name: parsedTemplateData.name, // Keep the template name
-        pages: updatedPages, // Update the pages array with the new page
+        id: parsedTemplateData.id,
+        name: parsedTemplateData.name,
+        pages: updatedPages,
       };
-
-      // Save the updated template data back to localStorage
       localStorage.setItem(
         `gjsProject-${projectId}`,
         JSON.stringify(projectData)
       );
-
-      // Optionally, set the newly added page as the selected page
-      setSelectedPage(newPage);
-
-      console.log(`New page added: ${newPage.name}`);
     }
+
+    setPages(updatedPages);
+    setSelectedPage(newPage);
   };
 
   const loadPageContent = (page: any) => {
     if (editorInstance) {
-      // Clear the editor before loading new content
-      editorInstance.DomComponents.clear();
+      const currentComponents = editorInstance.getComponents();
+      const currentStyles = editorInstance.getStyle();
+      const currentAssets = editorInstance.AssetManager.getAll().map(
+        (asset: { attributes: { src: any } }) => asset.attributes.src
+      );
 
-      // Load components from the selected page
-      const components = page.frames?.[0]?.component || [];
-      editorInstance.setComponents(components);
+      if (
+        JSON.stringify(currentComponents) !==
+          JSON.stringify(page.frames?.[0]?.component) ||
+        JSON.stringify(currentStyles) !== JSON.stringify(page.styles) ||
+        JSON.stringify(currentAssets) !== JSON.stringify(page.assets)
+      ) {
+        editorInstance.DomComponents.clear();
 
-      // Load styles from the selected page
-      const styles = page.styles || [];
-      editorInstance.setStyle(styles);
+        const components = page.frames?.[0]?.component || [];
+        editorInstance.setComponents(components);
 
-      // Load assets from the selected page
-      page.assets.forEach((asset: string) => {
-        editorInstance.AssetManager.add(asset);
-      });
+        const styles = page.styles || [];
+        editorInstance.setStyle(styles);
+
+        page.assets.forEach((asset: string) => {
+          editorInstance.AssetManager.add(asset);
+        });
+      }
+    } else {
+      console.error("Editor instance is not available!");
     }
   };
 
@@ -287,14 +220,6 @@ const App = () => {
     if (editorInstance) {
       loadPageContent(page);
     }
-  };
-  const savePages = (updatedPages: any[]) => {
-    setPages(updatedPages);
-    const projectData = { pages: updatedPages };
-    localStorage.setItem(
-      `gjsProject-${projectId}`,
-      JSON.stringify(projectData)
-    );
   };
 
   const saveTemplate = (editor: Editor) => {
@@ -309,7 +234,7 @@ const App = () => {
       (asset: { attributes: { src: any } }) => asset.attributes.src
     );
 
-    // Retrieve the existing template data from localStorage
+    // Get existing project data from localStorage
     const existingTemplateData = localStorage.getItem(
       `gjsProject-${projectId}`
     );
@@ -318,8 +243,7 @@ const App = () => {
       return;
     }
 
-    // Parse the existing template data
-    let parsedTemplateData: any;
+    let parsedTemplateData;
     try {
       parsedTemplateData = JSON.parse(existingTemplateData);
     } catch (error) {
@@ -327,29 +251,24 @@ const App = () => {
       return;
     }
 
-    // Update the pages array while preserving the template name
-    setPages((prevPages) => {
-      const updatedPages = prevPages.map((page) =>
-        page.id === selectedPage.id
-          ? { ...page, frames: [{ component: components }], styles, assets }
-          : page
-      );
+    // Update the content of the selected page
+    const updatedPages = pages.map((page) =>
+      page.id === selectedPage.id
+        ? { ...page, frames: [{ component: components }], styles, assets }
+        : page
+    );
 
-      // Preserve the template's name and id, while updating the pages
-      const projectData = {
-        id: parsedTemplateData.id, // Keep the template ID
-        name: parsedTemplateData.name, // Keep the template name
-        pages: updatedPages, // Update only the pages
-      };
+    // Save the updated project data back to localStorage
+    const projectData = {
+      id: parsedTemplateData.id,
+      name: parsedTemplateData.name,
+      pages: updatedPages,
+    };
 
-      // Save the updated template data back to localStorage
-      localStorage.setItem(
-        `gjsProject-${projectId}`,
-        JSON.stringify(projectData)
-      );
-
-      return updatedPages;
-    });
+    localStorage.setItem(
+      `gjsProject-${projectId}`,
+      JSON.stringify(projectData)
+    );
 
     console.log("Template saved for page:", selectedPage.name);
   };
@@ -363,7 +282,6 @@ const App = () => {
       );
       setPages(updatedPages);
 
-      // Retrieve the existing project data from localStorage
       const existingTemplateData = localStorage.getItem(
         `gjsProject-${projectId}`
       );
@@ -372,7 +290,7 @@ const App = () => {
         return;
       }
 
-      let parsedTemplateData: any;
+      let parsedTemplateData;
       try {
         parsedTemplateData = JSON.parse(existingTemplateData);
       } catch (error) {
@@ -380,14 +298,12 @@ const App = () => {
         return;
       }
 
-      // Preserve the project name and ID while updating the pages
       const projectData = {
-        id: parsedTemplateData.id, // Keep the template ID
-        name: parsedTemplateData.name, // Keep the template name
-        pages: updatedPages, // Update the pages array with the renamed page
+        id: parsedTemplateData.id,
+        name: parsedTemplateData.name,
+        pages: updatedPages,
       };
 
-      // Save the updated project data back to localStorage
       localStorage.setItem(
         `gjsProject-${projectId}`,
         JSON.stringify(projectData)
@@ -395,43 +311,16 @@ const App = () => {
     }
   };
 
-  if (editorInstance) {
-    editorInstance.on("run:preview", () => {
-      // Get HTML and CSS content from the editor
-      const htmlContent = editorInstance.getHtml();
-      const cssContent = editorInstance.getCss();
-
-      if (!htmlContent || !cssContent) {
-        console.error("HTML or CSS content missing!");
-        return;
-      }
-
-      // Navigate to the preview route with HTML and CSS as state
-      navigate("/preview", {
-        state: { html: htmlContent, css: cssContent },
-      });
-    });
-  }
+  const handleRenderClick = () => {
+    if (projectId) {
+      renderPublishedTemplate(projectId);
+    }
+  };
 
   const renderPublishedTemplate = (projectId: string) => {
     if (editorInstance) {
-      const pages = editorInstance.Pages;
-
-      const selectedPage = pages.getSelected();
-      if (!selectedPage) {
-        console.error("No selected page to render!");
-        return;
-      }
-
       const html = editorInstance.getHtml();
       const css = editorInstance.getCss();
-
-      if (!html || !css) {
-        console.error("HTML or CSS content missing!");
-        return;
-      }
-
-      // Add the JavaScript to handle dropdown toggle in the preview
       const script = `
         <script>
           document.addEventListener('DOMContentLoaded', function() {
@@ -445,39 +334,19 @@ const App = () => {
           });
         </script>
       `;
-
-      // Combine the HTML, CSS, and the new script
       const renderedTemplate = `
         <!DOCTYPE html>
         <html>
-          <head>
-            <style>${css}</style>
-          </head>
-          <body>${html}</body>
-          ${script}
+          <head><style>${css}</style></head>
+          <body>${html}</body>${script}
         </html>
       `;
-
       const newWindow = window.open();
       newWindow?.document.write(renderedTemplate);
       newWindow?.document.close();
-    } else {
-      console.error("Editor instance not found!");
     }
   };
 
-  const handleRenderClick = () => {
-    if (projectId) {
-      renderPublishedTemplate(projectId);
-    }
-  };
-
-  console.log("Selected page:", selectedPage);
-  console.log("Pages array:", pages);
-  console.log(
-    "Editor components:",
-    editorInstance ? editorInstance.getComponents() : "Editor instance is null"
-  );
   return (
     <ThemeProvider theme={theme}>
       <GjsEditor
@@ -503,7 +372,19 @@ const App = () => {
           Render Template
         </button>
         <div className="save-button-container">
-          <button onClick={handleSaveClick} className="save-button">
+          <button
+            onClick={handleSaveClick}
+            style={{
+              margin: "20px",
+              backgroundColor: "#28a745",
+              color: "white",
+              padding: "10px 20px",
+              border: "none",
+              borderRadius: "4px",
+              cursor: "pointer",
+              fontSize: "16px",
+            }}
+          >
             Save Template
           </button>
         </div>

@@ -14,11 +14,11 @@ export default function CustomPageManager({
 }: any) {
   return (
     <div className="gjs-custom-page-manager">
-      <div className="p-2">
+      {/* <div className="p-2">
         <button type="button" className={BTN_CLS} onClick={addNewPage}>
           Add new page
         </button>
-      </div>
+      </div> */}
       {pages.map((page: any, index: number) => (
         <div
           key={page.id} // Use page.id as the key

@@ -1,12 +1,4 @@
-import {
-  Key,
-  ReactElement,
-  JSXElementConstructor,
-  ReactNode,
-  ReactPortal,
-  useEffect,
-  useState,
-} from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Templates = () => {
@@ -16,17 +8,17 @@ const Templates = () => {
 
   // Load all projects/templates from localStorage
   useEffect(() => {
-    const loadedTemplates = [];
+    const loadedTemplates: { id: string; name: string }[] = [];
+
     try {
       for (let i = 0; i < localStorage.length; i++) {
         const key = localStorage.key(i);
         if (key && key.startsWith("gjsProject-")) {
           const projectData = localStorage.getItem(key);
-          console.log("projectData", projectData);
+
           if (projectData) {
             try {
               const parsedData = JSON.parse(projectData);
-              // Use the template's name property instead of the first page's name
               const templateName = parsedData?.name || `Unnamed Project ${key}`;
               loadedTemplates.push({
                 id: key.replace("gjsProject-", ""),
@@ -38,11 +30,13 @@ const Templates = () => {
           }
         }
       }
+
       console.log("Loaded templates:", loadedTemplates);
       setTemplates(loadedTemplates);
     } catch (error) {
       console.error("Error accessing localStorage:", error);
     }
+
     setLoading(false);
   }, []);
 
@@ -53,12 +47,26 @@ const Templates = () => {
 
     const newTemplate = {
       id: Date.now().toString(), // Unique ID
-      name: newTemplateName, // Use the template's name property
+      name: newTemplateName, // Template name
       pages: [
         {
-          id: "page1",
-          name: "Home Page",
-          frames: [{ component: [] }], // Ensure frames is an array with a component property
+          id: "home",
+          name: "Home",
+          frames: [{ component: [] }],
+          styles: [],
+          assets: [],
+        },
+        {
+          id: "contact",
+          name: "Contact",
+          frames: [{ component: [] }],
+          styles: [],
+          assets: [],
+        },
+        {
+          id: "pricing",
+          name: "Pricing",
+          frames: [{ component: [] }],
           styles: [],
           assets: [],
         },
@@ -74,7 +82,7 @@ const Templates = () => {
     // Update the templates list
     setTemplates((prev) => [...prev, newTemplate]);
 
-    // Navigate to the new template/project
+    // Navigate to the new template/project builder
     navigate(`/builder/${newTemplate.id}`);
   };
 
@@ -89,31 +97,44 @@ const Templates = () => {
 
   return (
     <div>
-      <button onClick={addNewTemplate}>Create New Template</button>
+      <button
+        onClick={addNewTemplate}
+        style={{
+          margin: "20px",
+          backgroundColor: "#28a745",
+          color: "white",
+          padding: "10px 20px",
+          border: "none",
+          borderRadius: "4px",
+          cursor: "pointer",
+          fontSize: "16px",
+        }}
+      >
+        Create New Template
+      </button>
+
       <h1>Templates</h1>
       <ul>
         {templates.length > 0 ? (
-          templates.map((template: { id: any; name: any }) => {
-            console.log(template);
-            return (
-              <li key={template.id}>
-                <button
-                  onClick={() => handleTemplateClick(template.id as string)}
-                  style={{
-                    marginTop: "10px",
-                    backgroundColor: "#007BFF",
-                    color: "white",
-                    padding: "8px 16px",
-                    border: "none",
-                    borderRadius: "4px",
-                    cursor: "pointer",
-                  }}
-                >
-                  {template.name}
-                </button>
-              </li>
-            );
-          })
+          templates.map((template) => (
+            <li key={template.id}>
+              <button
+                onClick={() => handleTemplateClick(template.id)}
+                style={{
+                  marginTop: "10px",
+                  backgroundColor: "#007BFF",
+                  color: "white",
+                  padding: "8px 16px",
+                  border: "none",
+                  borderRadius: "4px",
+                  cursor: "pointer",
+                  fontSize: "14px",
+                }}
+              >
+                {template.name}
+              </button>
+            </li>
+          ))
         ) : (
           <li>No templates found. Add a new template!</li>
         )}
