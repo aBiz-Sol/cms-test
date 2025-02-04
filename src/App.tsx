@@ -81,7 +81,10 @@ const App = () => {
       ],
     },
     canvas: {
-      scripts: ["https://cdn.tailwindcss.com"],
+      scripts: [
+        "https://cdn.tailwindcss.com",
+        "https://cdn.jsdelivr.net/npm/flowbite@1.4.6/dist/flowbite.min.js",
+      ],
       styles: ["./style.css"],
     },
     style: "body { background-color: #000000; }",
@@ -317,7 +320,23 @@ const App = () => {
       );
     }
   };
+  if (editorInstance) {
+    editorInstance.on("run:preview", () => {
+      // Get HTML and CSS content from the editor
+      const htmlContent = editorInstance.getHtml();
+      const cssContent = editorInstance.getCss();
 
+      if (!htmlContent || !cssContent) {
+        console.error("HTML or CSS content missing!");
+        return;
+      }
+
+      // Navigate to the preview route with HTML and CSS as state
+      navigate("/preview", {
+        state: { html: htmlContent, css: cssContent },
+      });
+    });
+  }
   const handleRenderClick = () => {
     if (projectId) {
       renderPublishedTemplate(projectId);
@@ -379,26 +398,21 @@ const App = () => {
         <button onClick={handleRenderClick} className="render-button">
           Render Template
         </button>
-        <div className="save-button-container">
+        <div className="flex justify-between save-button-container">
           <button
             onClick={handleSaveClick}
-            style={{
-              margin: "20px",
-              backgroundColor: "#28a745",
-              color: "white",
-              padding: "10px 20px",
-              border: "none",
-              borderRadius: "4px",
-              cursor: "pointer",
-              fontSize: "16px",
-            }}
+            className="m-5 bg-[#28a745] text-white py-2 px-5 border-none rounded-md cursor-pointer text-lg"
           >
             Save Template
           </button>
+
+          <button
+            onClick={() => editorInstance?.runCommand("preview")}
+            className="px-5 py-2 m-5 text-lg text-white bg-blue-500 border-none rounded-md cursor-pointer"
+          >
+            Preview Template
+          </button>
         </div>
-        <button onClick={() => editorInstance?.runCommand("preview")}>
-          Preview Template
-        </button>
 
         <div className={`flex h-full border-t ${MAIN_BORDER_COLOR}`}>
           <RightSidebar
