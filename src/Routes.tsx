@@ -16,7 +16,7 @@ const Routes = () => {
         <Route path="/" element={<Templates />} />
         <Route path="/templates" element={<Templates />} />
         <Route path="/builder/:projectId" element={<App />} />
-        <Route path="/preview" element={<Preview />} />
+        <Route path="/preview/:pageId" element={<Preview />} />
       </RouterRoutes>
     </Router>
   );

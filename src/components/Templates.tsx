@@ -8,7 +8,7 @@ const Templates = () => {
 
   // Load all projects/templates from localStorage
   useEffect(() => {
-    const loadedTemplates: { id: string; name: string }[] = [];
+    const loadedTemplates: { id: string; name: string; pages: any }[] = [];
 
     try {
       for (let i = 0; i < localStorage.length; i++) {
@@ -23,6 +23,7 @@ const Templates = () => {
               loadedTemplates.push({
                 id: key.replace("gjsProject-", ""),
                 name: templateName,
+                pages: parsedData?.pages || [],
               });
             } catch (error) {
               console.error("Error parsing project data:", error);

@@ -335,16 +335,33 @@ const App = () => {
         return;
       }
 
-      // Navigate to the preview route with HTML and CSS as state
       navigate("/preview", {
-        state: { html: htmlContent, css: cssContent },
+        state: {
+          templateId: projectId,
+          html: htmlContent,
+          css: cssContent,
+        },
       });
     });
   }
 
   const handleRenderClick = () => {
-    if (projectId) {
-      renderPublishedTemplate(projectId);
+    if (projectId && editorInstance && selectedPage) {
+      const html = editorInstance.getHtml();
+      const cssContent = editorInstance.getCss() || "";
+
+      // Save the HTML and CSS with keys including pageId
+      localStorage.setItem(
+        `gjsProject-${projectId}-page-${selectedPage.id}-html`,
+        html
+      );
+      localStorage.setItem(
+        `gjsProject-${projectId}-page-${selectedPage.id}-css`,
+        cssContent
+      );
+
+      // Navigate to the preview page with specific pageId in the URL
+      navigate(`/preview/${selectedPage.id}`);
     }
   };
 
@@ -412,11 +429,17 @@ const App = () => {
             Save Template
           </button>
 
-          <button
+          {/* <button
             onClick={() => editorInstance?.runCommand("preview")}
             className="px-5 py-2 m-5 text-lg text-white bg-blue-500 border-none rounded-md cursor-pointer"
           >
             Preview Template
+          </button> */}
+          <button
+            onClick={handleRenderClick}
+            className="px-5 py-2 m-5 text-lg text-white bg-blue-500 border-none rounded-md cursor-pointer"
+          >
+            Publish Template
           </button>
         </div>
 
