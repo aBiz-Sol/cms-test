@@ -346,54 +346,29 @@ const App = () => {
   }
 
   const handleRenderClick = () => {
-    if (projectId && editorInstance && selectedPage) {
-      const html = editorInstance.getHtml();
-      const cssContent = editorInstance.getCss() || "";
+    if (projectId && editorInstance) {
+      // Save HTML and CSS for each page individually
+      pages.forEach((page) => {
+        // Load the page content into the editor
+        loadPageContent(page);
 
-      // Save the HTML and CSS with keys including pageId
-      localStorage.setItem(
-        `gjsProject-${projectId}-page-${selectedPage.id}-html`,
-        html
-      );
-      localStorage.setItem(
-        `gjsProject-${projectId}-page-${selectedPage.id}-css`,
-        cssContent
-      );
+        // Get the HTML and CSS of the editor after loading the specific page's content
+        const html = editorInstance.getHtml();
+        const cssContent = editorInstance.getCss() || "";
 
-      // Navigate to the preview page with specific pageId in the URL
+        // Save the HTML and CSS with keys including pageId
+        localStorage.setItem(
+          `gjsProject-${projectId}-page-${page.id}-html`,
+          html
+        );
+        localStorage.setItem(
+          `gjsProject-${projectId}-page-${page.id}-css`,
+          cssContent
+        );
+      });
+
+      // Navigate to the preview page for the selected page
       navigate(`/preview/${selectedPage.id}`);
-    }
-  };
-
-  const renderPublishedTemplate = (projectId: string) => {
-    if (editorInstance) {
-      const html = editorInstance.getHtml();
-      const css = editorInstance.getCss();
-      const script = `
-        <script>
-          document.addEventListener('DOMContentLoaded', function() {
-            // Add your script here, for example, navigation toggle
-            const dropdownBtn = document.getElementById('dropdownNavbarLink');
-            const dropdownMenu = document.getElementById('dropdownNavbar');
-            if (dropdownBtn && dropdownMenu) {
-              dropdownBtn.addEventListener('click', function() {
-                dropdownMenu.classList.toggle('hidden');
-              });
-            }
-          });
-        </script>
-      `;
-      const renderedTemplate = `
-        <!DOCTYPE html>
-        <html>
-          <head><style>${css}</style></head>
-          <body>${html}</body>${script}
-        </html>
-      `;
-      const newWindow = window.open();
-      newWindow?.document.write(renderedTemplate);
-      newWindow?.document.close();
-      toast.info("Rendered template in new window!");
     }
   };
 

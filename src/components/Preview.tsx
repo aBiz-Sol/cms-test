@@ -3,9 +3,10 @@ import { useParams } from "react-router-dom";
 
 const Preview = () => {
   const { pageId } = useParams(); // Get the pageId from the URL
-  const [htmlContent, setHtmlContent] = useState<string>("");
-  const [cssContent, setCssContent] = useState<string>("");
+  const [htmlContent, setHtmlContent] = useState<string>(""); // HTML content
+  const [cssContent, setCssContent] = useState<string>(""); // CSS content
   const [pageContent, setPageContent] = useState<any>(null); // Store the specific page content
+
   useEffect(() => {
     if (pageId) {
       Object.keys(localStorage).forEach((key) => {
@@ -24,9 +25,10 @@ const Preview = () => {
             projectData = JSON.parse(savedProjectData);
           } catch (error) {
             console.error(`Failed to parse JSON for key ${key}:`, error);
-            return; // Skip this project if parsing fails
+            return;
           }
 
+          // Find the page with the matching id (e.g., 'home', 'pricing')
           const page = projectData.pages?.find((p: any) => p.id === pageId);
 
           if (page) {
@@ -36,15 +38,16 @@ const Preview = () => {
             const pageHtmlKey = `gjsProject-${projectId}-page-${pageId}-html`;
             const pageCssKey = `gjsProject-${projectId}-page-${pageId}-css`;
 
+            // Fetch the HTML content directly as a string
             const savedHtml = localStorage.getItem(pageHtmlKey);
-            const savedCss = localStorage.getItem(pageCssKey);
-
             if (savedHtml) {
               setHtmlContent(savedHtml); // Apply the HTML content if available
             } else {
               console.error("No HTML content found for this page!");
             }
 
+            // Fetch the CSS content directly as a string
+            const savedCss = localStorage.getItem(pageCssKey);
             if (savedCss) {
               setCssContent(savedCss); // Apply the CSS content if available
             } else {
@@ -60,10 +63,8 @@ const Preview = () => {
 
   return (
     <div>
-      <h1>Preview Template</h1>
       {pageContent ? (
         <>
-          <h2>{pageContent.name}</h2>
           {/* Apply the CSS to the page */}
           {cssContent && <style>{cssContent}</style>}
           {/* Inject the HTML content */}
@@ -74,7 +75,7 @@ const Preview = () => {
           />
         </>
       ) : (
-        <p>Loading content...</p>
+        <p>Page not found or loading failed. Please try again later.</p>
       )}
     </div>
   );
