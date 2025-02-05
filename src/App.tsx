@@ -7,7 +7,7 @@ import GjsEditor, {
 } from "@grapesjs/react";
 import type { Editor, EditorConfig } from "grapesjs";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-import { MAIN_BORDER_COLOR } from "./components/common";
+import { MAIN_BORDER_COLOR, sampleAssets } from "./components/common";
 import CustomModal from "./components/CustomModal";
 import CustomAssetManager from "./components/CustomAssetManager";
 import Topbar from "./components/Topbar";
@@ -69,6 +69,9 @@ const App = () => {
       autosave: false,
       autoload: false,
     },
+    assetManager: {
+      assets: sampleAssets, // Add sample assets here
+    },
     undoManager: { trackSelection: false },
     selectorManager: { componentFirst: true },
     blockManager: {
@@ -94,6 +97,7 @@ const App = () => {
     console.log("Editor loaded");
     (window as any).editor = editor;
     setEditorInstance(editor);
+    editor.AssetManager.add(sampleAssets);
 
     // Load the project data based on projectId
     const savedData = localStorage.getItem(`gjsProject-${projectId}`);
@@ -337,6 +341,7 @@ const App = () => {
       });
     });
   }
+
   const handleRenderClick = () => {
     if (projectId) {
       renderPublishedTemplate(projectId);
@@ -350,6 +355,7 @@ const App = () => {
       const script = `
         <script>
           document.addEventListener('DOMContentLoaded', function() {
+            // Add your script here, for example, navigation toggle
             const dropdownBtn = document.getElementById('dropdownNavbarLink');
             const dropdownMenu = document.getElementById('dropdownNavbar');
             if (dropdownBtn && dropdownMenu) {
