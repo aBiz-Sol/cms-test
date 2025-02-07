@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import Header from "./Header";
 
 const Preview = () => {
   const { pageId } = useParams(); // Get the pageId from the URL
@@ -65,7 +66,7 @@ const Preview = () => {
     <div>
       {pageContent ? (
         <>
-          <div className="bg-red-300">Headeerrr</div>
+          <Header />
           {/* Apply the CSS to the page */}
           {cssContent && <style>{cssContent}</style>}
           {/* Inject the HTML content */}

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Header from "./Header";
 
 const Templates = () => {
   const navigate = useNavigate();
@@ -98,6 +99,7 @@ const Templates = () => {
 
   return (
     <div>
+      <Header />
       <button
         onClick={addNewTemplate}
         style={{
