@@ -65,6 +65,7 @@ const Preview = () => {
     <div>
       {pageContent ? (
         <>
+          <div className="bg-red-300">Headeerrr</div>
           {/* Apply the CSS to the page */}
           {cssContent && <style>{cssContent}</style>}
           {/* Inject the HTML content */}
