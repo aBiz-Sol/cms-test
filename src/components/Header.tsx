@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   AppBar,
   Toolbar,
@@ -34,11 +34,12 @@ import {
 const Header = () => {
   const [loggedIn, setLoggedIn] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
-  const [getStartedEnabled, setGetStartedEnabled] = useState(false);
+  const theme = useTheme();
   const [getStartedAnchorEl, setGetStartedAnchorEl] = useState(null);
   const [userMenuAnchorEl, setUserMenuAnchorEl] = useState<HTMLElement | null>(
     null
   );
+  const [isScrolled, setIsScrolled] = useState(false);
 
   const [bloggingMode, setBloggingMode] = useState(false);
   const [user, setUser] = useState({ firstName: "Zain", lastName: "Shoukat" });
@@ -128,39 +129,36 @@ const Header = () => {
   };
   // Toggle login/logout state
   const toggleLogin = () => {
+    setUserMenuAnchorEl(null); // Close dropdown before changing login state
     if (!loggedIn) {
-      setUser({ firstName: "Zain", lastName: "Shoukat" }); // Set user on login
+      setUser({ firstName: "Zain", lastName: "Shoukat" });
     }
     setLoggedIn(!loggedIn);
   };
 
-  // Toggle "Get Started" button state (linked to backend)
-  const toggleGetStarted = () => {
-    setGetStartedEnabled(!getStartedEnabled);
-    console.log(`Get Started is now ${getStartedEnabled ? "OFF" : "ON"}`);
-    // Simulate backend call (dummy data)
-    fetch("/api/toggle-get-started", {
-      method: "POST",
-      body: JSON.stringify({ enabled: !getStartedEnabled }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("Backend response:", data);
-      })
-      .catch((error) => {
-        console.error("Error toggling Get Started:", error);
-      });
-  };
+  // Handle scroll event
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setIsScrolled(true); // User has scrolled
+      } else {
+        setIsScrolled(false); // User is at the top
+      }
+    };
 
-  const theme = useTheme();
-
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
   return (
     <AppBar
-      position="static"
-      style={{
-        background: "#ffffff", // White background
-        boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)", // Subtle shadow
-        color: "#000000", // Black text
+      position="sticky"
+      sx={{
+        background: isScrolled
+          ? "rgba(30, 60, 114, 0.8)" // Semi-transparent when scrolled
+          : "linear-gradient(to right, #1e3c72, #2a5298)", // Gradient at top
+        boxShadow: isScrolled ? theme.shadows[3] : "none",
+        padding: "10px 0",
+        transition: "background 0.3s ease-in-out, box-shadow 0.3s ease-in-out",
       }}
     >
       <Container maxWidth="xl">
@@ -411,6 +409,23 @@ const Header = () => {
                   <Menu
                     anchorEl={userMenuAnchorEl}
                     open={Boolean(userMenuAnchorEl)}
+                    anchorOrigin={{
+                      vertical: "top",
+                      horizontal: "center",
+                    }}
+                    transformOrigin={{
+                      vertical: "bottom",
+                      horizontal: "center",
+                    }}
+                    disableRestoreFocus
+                    PaperProps={{
+                      style: {
+                        backgroundColor: "transparent",
+                        boxShadow: "none",
+                        borderRadius: 0,
+                        overflow: "visible",
+                      },
+                    }}
                     onClose={() => setUserMenuAnchorEl(null)}
                   >
                     <MenuItem>

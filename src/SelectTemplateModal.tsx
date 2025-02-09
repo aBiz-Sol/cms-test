@@ -112,6 +112,7 @@ const SelectTemplateModal = ({
                       });
                     }
                     editor.setComponents(template.components);
+                    setOpenModal(false);
                     // editor.setStyle(template.style);
                   }}
                 >

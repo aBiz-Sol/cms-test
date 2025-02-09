@@ -4,6 +4,15 @@ import { createRoot } from "react-dom/client";
 import Routes from "./Routes";
 import { createTheme, ThemeProvider } from "@mui/material";
 const theme = createTheme({
+  components: {
+    MuiPopover: {
+      styleOverrides: {
+        paper: {
+          marginLeft: "-8px",
+        },
+      },
+    },
+  },
   palette: {
     primary: {
       main: "#1976d2", // Customize your theme colors
