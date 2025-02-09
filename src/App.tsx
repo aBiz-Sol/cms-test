@@ -393,9 +393,9 @@ const App = () => {
         onEditor={onEditor}
       >
         <Topbar className="min-h-[48px] bg-[#555]" />
-        <button onClick={handleRenderClick} className="render-button">
+        {/* <button onClick={handleRenderClick} className="render-button">
           Render Template
-        </button>
+        </button> */}
         <div className="flex justify-between save-button-container">
           <button
             onClick={handleSaveClick}

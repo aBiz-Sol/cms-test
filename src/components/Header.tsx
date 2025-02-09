@@ -18,6 +18,7 @@ import {
   useTheme,
   CardMedia,
   MenuItem,
+  Link,
 } from "@mui/material";
 import {
   AccountCircle as AccountCircleIcon,
@@ -129,10 +130,8 @@ const Header = () => {
   };
   // Toggle login/logout state
   const toggleLogin = () => {
-    setUserMenuAnchorEl(null); // Close dropdown before changing login state
-    if (!loggedIn) {
-      setUser({ firstName: "Zain", lastName: "Shoukat" });
-    }
+    setUserMenuAnchorEl(null); // Close user menu
+    setGetStartedAnchorEl(null); // Close get started dropdown
     setLoggedIn(!loggedIn);
   };
 
@@ -164,11 +163,16 @@ const Header = () => {
       <Container maxWidth="xl">
         <Toolbar>
           {/* Logo from backend */}
-          <img
-            src={logoUrl}
-            alt="Logo"
-            style={{ height: "40px", marginRight: "20px" }}
-          />
+          <Link
+            href="/preview/home"
+            sx={{ display: "flex", alignItems: "center" }}
+          >
+            <img
+              src={logoUrl}
+              alt="Logo"
+              style={{ height: "40px", marginRight: "20px", cursor: "pointer" }}
+            />
+          </Link>
 
           {/* Navigation Links */}
           <Box
@@ -180,7 +184,11 @@ const Header = () => {
           >
             {/* Services Button (No Dropdown Icon) */}
             <Box onMouseEnter={handleMenuOpen} sx={{ position: "relative" }}>
-              <Button color="inherit" sx={{ textTransform: "none" }}>
+              <Button
+                color="inherit"
+                sx={{ textTransform: "none" }}
+                href="/preview/services"
+              >
                 Services
               </Button>
               <Menu
@@ -398,9 +406,11 @@ const Header = () => {
                       marginLeft: "10px",
                       cursor: "pointer",
                     }}
-                    onClick={(event) =>
-                      setUserMenuAnchorEl(event.currentTarget)
-                    }
+                    onClick={(event) => {
+                      if (loggedIn) {
+                        setUserMenuAnchorEl(event.currentTarget);
+                      }
+                    }}
                   >
                     {`${user.firstName[0]}${user.lastName[0]}`}
                   </Avatar>
@@ -409,23 +419,6 @@ const Header = () => {
                   <Menu
                     anchorEl={userMenuAnchorEl}
                     open={Boolean(userMenuAnchorEl)}
-                    anchorOrigin={{
-                      vertical: "top",
-                      horizontal: "center",
-                    }}
-                    transformOrigin={{
-                      vertical: "bottom",
-                      horizontal: "center",
-                    }}
-                    disableRestoreFocus
-                    PaperProps={{
-                      style: {
-                        backgroundColor: "transparent",
-                        boxShadow: "none",
-                        borderRadius: 0,
-                        overflow: "visible",
-                      },
-                    }}
                     onClose={() => setUserMenuAnchorEl(null)}
                   >
                     <MenuItem>
