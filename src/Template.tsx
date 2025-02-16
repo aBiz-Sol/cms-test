@@ -47,13 +47,13 @@ const Template = () => {
       {draggingStart || componentsAdded ? null : (
         <div
           key="empty-section"
-          className="bg-gray-50 border border-gray-300 absolute h-[calc(100vh-72px)] z-10 rounded-xl p-6 flex flex-col items-center justify-center w-full gap-4 shadow-md"
+          className=" absolute h-[calc(100vh-72px)] mx-auto z-10  p-6 flex flex-col items-center justify-center w-3/4 gap-4 "
         >
           <h1 className="text-2xl font-bold text-gray-700">
             This Page is Empty
           </h1>
           <p className="text-center text-gray-500">
-            Add a section from a template, or drag blocks from the left panel.
+            Add a page from a template, or drag blocks from the left panel.
           </p>
           <button
             className="px-6 py-3 font-semibold text-white transition-all bg-blue-500 rounded-lg shadow-lg hover:bg-blue-600"
@@ -64,7 +64,7 @@ const Template = () => {
               setOpenModal(true);
             }}
           >
-            + Add a Section
+            + Add a Page
           </button>
         </div>
       )}

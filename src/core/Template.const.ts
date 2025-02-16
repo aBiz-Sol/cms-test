@@ -150,14 +150,7 @@ export const PERSONAL_TEMPLATES = [
   </div>`,
     heading: "Face Cream",
   },
-  {
-    templateId: "",
-    thumbnail: "",
-    style: "",
-    backgroundColor: "#cac5c5",
-    components: `<body id="itgy"><h1 class="heading"><div class="ql-editor" contenteditable="true"><p><strong style="font-size: 25px;">Welcome to a random Template</strong></p></div></h1><p class="paragraph"><div class="ql-editor" contenteditable="true"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</p></div></p></body>`,
-    heading: "Beautiful",
-  },
+
   {
     templateId: "",
     thumbnail: "https://www.w3schools.com/w3images/ny.jpg",
