@@ -64,21 +64,6 @@ export default function RightSidebar({
     }
   }, [pages, selectedPage]);
 
-  // const addPage = (props: PageProperties) => {
-  //   // Implement the logic to add a page here
-  //   console.log("Add new page with properties:", props);
-  // };
-
-  // const selectPage = (page: string | Page) => {
-  //   // Implement the logic to select a page here
-  //   console.log("Selected page:", page);
-  // };
-
-  // const removePage = (page: string | Page) => {
-  //   // Implement the logic to remove a page here
-  //   console.log("Removed page:", page);
-  // };
-
   return (
     <div className={cx("gjs-right-sidebar flex flex-col", className)}>
       <Tabs
@@ -89,10 +74,6 @@ export default function RightSidebar({
         <Tab {...defaultTabProps} label={<Icon size={1} path={mdiBrush} />} />
         <Tab {...defaultTabProps} label={<Icon size={1} path={mdiCog} />} />
         <Tab {...defaultTabProps} label={<Icon size={1} path={mdiLayers} />} />
-        {/* <Tab
-          {...defaultTabProps}
-          label={<Icon size={1} path={mdiViewGridPlus} />}
-        /> */}
         <Tab
           {...defaultTabProps}
           label={<Icon size={1} path={mdiTextBoxMultiple} />}
@@ -121,11 +102,6 @@ export default function RightSidebar({
             {(props) => <CustomLayerManager {...props} />}
           </LayersProvider>
         )}
-        {/* {selectedTab === 3 && (
-          <BlocksProvider>
-            {(props) => <CustomBlockManager {...props} />}
-          </BlocksProvider>
-        )} */}
         {selectedTab === 3 && (
           <CustomPageManager
             pages={pages} // Pass pages here directly
@@ -135,12 +111,7 @@ export default function RightSidebar({
             selectedPage={selectedPage}
             handleChangePage={handleChangePage}
             handleRenamePage={handleRenamePage}
-            // add={addPage}
-            // remove={removePage}
           />
-          // <PagesProvider>
-          //   {(props) => <CustomPageManager {...props} pages={pages} />}
-          // </PagesProvider>
         )}
       </div>
     </div>

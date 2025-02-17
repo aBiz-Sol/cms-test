@@ -14,11 +14,6 @@ export default function CustomPageManager({
 }: any) {
   return (
     <div className="gjs-custom-page-manager">
-      {/* <div className="p-2">
-        <button type="button" className={BTN_CLS} onClick={addNewPage}>
-          Add new page
-        </button>
-      </div> */}
       {pages.map((page: any, index: number) => (
         <div
           key={page.id} // Use page.id as the key
@@ -33,20 +28,10 @@ export default function CustomPageManager({
             fontWeight: selectedPage?.name === page.name ? "bold" : "normal",
           }}
         >
-          <button
-            type="button"
-            className="flex-grow text-left"
-            // onClick={() => select(page)
-
-            // }
-          >
+          <button type="button" className="flex-grow text-left">
             {page.name || "Untitled page"} {/* Use page.name directly */}
           </button>
-          {/* <button type="button" onClick={() => remove(page)}
-            
-            >
-            <Icon size={0.7} path={mdiDelete} />
-          </button> */}
+
           <button
             type="button"
             onClick={() => handleRenamePage(page)} // Trigger the rename logic

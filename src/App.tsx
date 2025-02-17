@@ -29,14 +29,8 @@ const theme = createTheme({
 
 const App = () => {
   const { projectId } = useParams();
-  console.log(projectId);
   const navigate = useNavigate();
   const [pages, setPages] = React.useState<any[]>([]);
-  const [previewOpen, setPreviewOpen] = React.useState(false);
-  const [previewContent, setPreviewContent] = React.useState({
-    html: "",
-    css: "",
-  });
   const [editorInstance, setEditorInstance] = React.useState<Editor | null>(
     null
   );
@@ -396,16 +390,8 @@ const App = () => {
           className="min-h-[48px] bg-[#10BAAC]"
           handleSaveClick={handleSaveClick}
         />
-        {/* <button onClick={handleRenderClick} className="render-button">
-          Render Template
-        </button> */}
+
         <div className="flex justify-between save-button-container">
-          {/* <button
-            onClick={() => editorInstance?.runCommand("preview")}
-            className="px-5 py-2 m-5 text-lg text-white bg-blue-500 border-none rounded-md cursor-pointer"
-          >
-            Preview Template
-          </button> */}
           <button
             onClick={handleRenderClick}
             className="px-5 py-2 m-5 text-lg text-white bg-[#10BAAC] border-none rounded-md cursor-pointer"
