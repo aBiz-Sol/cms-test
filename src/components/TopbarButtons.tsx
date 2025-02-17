@@ -1,15 +1,15 @@
-import * as React from 'react';
-import { useEditor } from '@grapesjs/react';
+import * as React from "react";
+import { useEditor } from "@grapesjs/react";
 import {
   mdiArrowULeftTop,
   mdiArrowURightTop,
   mdiBorderRadius,
   mdiFullscreen,
   mdiXml,
-} from '@mdi/js';
-import Icon from '@mdi/react';
-import { useEffect, useState } from 'react';
-import { BTN_CLS, MAIN_BORDER_COLOR, cx } from './common';
+} from "@mdi/js";
+import Icon from "@mdi/react";
+import { useEffect, useState } from "react";
+import { BTN_CLS, MAIN_BORDER_COLOR, cx } from "./common";
 
 interface CommandButton {
   id: string;
@@ -26,33 +26,33 @@ export default function TopbarButtons({
   const { UndoManager, Commands } = editor;
   const cmdButtons: CommandButton[] = [
     {
-      id: 'core:component-outline',
+      id: "core:component-outline",
       iconPath: mdiBorderRadius,
     },
     {
-      id: 'core:fullscreen',
+      id: "core:fullscreen",
       iconPath: mdiFullscreen,
-      options: { target: '#root' },
+      options: { target: "#root" },
     },
     {
-      id: 'core:open-code',
+      id: "core:open-code",
       iconPath: mdiXml,
     },
     {
-      id: 'core:undo',
+      id: "core:undo",
       iconPath: mdiArrowULeftTop,
       disabled: () => !UndoManager.hasUndo(),
     },
     {
-      id: 'core:redo',
+      id: "core:redo",
       iconPath: mdiArrowURightTop,
       disabled: () => !UndoManager.hasRedo(),
     },
   ];
 
   useEffect(() => {
-    const cmdEvent = 'run stop';
-    const updateEvent = 'update';
+    const cmdEvent = "run stop";
+    const updateEvent = "update";
     const updateCounter = () => setUpdateCounter((value) => value + 1);
     const onCommand = (id: string) => {
       cmdButtons.find((btn) => btn.id === id) && updateCounter();
@@ -67,16 +67,16 @@ export default function TopbarButtons({
   }, []);
 
   return (
-    <div className={cx('flex gap-3', className)}>
+    <div className={cx("flex gap-3", className)}>
       {cmdButtons.map(({ id, iconPath, disabled, options = {} }) => (
         <button
           key={id}
           type="button"
           className={cx(
             BTN_CLS,
-            MAIN_BORDER_COLOR,
-            Commands.isActive(id) && 'text-sky-300',
-            disabled?.() && 'opacity-50'
+            // MAIN_BORDER_COLOR,
+            Commands.isActive(id) && "text-sky-300",
+            disabled?.() && "opacity-50"
           )}
           onClick={() =>
             Commands.isActive(id)

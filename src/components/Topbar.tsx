@@ -6,9 +6,11 @@ import Select from "@mui/material/Select";
 import { cx } from "./common";
 import TopbarButtons from "./TopbarButtons";
 
-export default function Topbar({
-  className,
-}: React.HTMLAttributes<HTMLDivElement>) {
+interface TopbarProps extends React.HTMLAttributes<HTMLDivElement> {
+  handleSaveClick: () => void;
+}
+
+export default function Topbar({ className, handleSaveClick }: TopbarProps) {
   return (
     <div className={cx("gjs-top-sidebar flex items-center p-1", className)}>
       <DevicesProvider>
@@ -27,6 +29,14 @@ export default function Topbar({
       <WithEditor>
         <TopbarButtons className="px-2 ml-auto" />
       </WithEditor>
+      <div className="flex justify-between save-button-container">
+        <button
+          onClick={handleSaveClick}
+          className="m-5 bg-[#08496D] text-white py-2 px-5 border-none rounded-md cursor-pointer text-lg"
+        >
+          Save
+        </button>
+      </div>
     </div>
   );
 }

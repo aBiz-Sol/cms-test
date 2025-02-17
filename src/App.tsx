@@ -392,18 +392,14 @@ const App = () => {
         ]}
         onEditor={onEditor}
       >
-        <Topbar className="min-h-[48px] bg-[#555]" />
+        <Topbar
+          className="min-h-[48px] bg-[#10BAAC]"
+          handleSaveClick={handleSaveClick}
+        />
         {/* <button onClick={handleRenderClick} className="render-button">
           Render Template
         </button> */}
         <div className="flex justify-between save-button-container">
-          <button
-            onClick={handleSaveClick}
-            className="m-5 bg-[#28a745] text-white py-2 px-5 border-none rounded-md cursor-pointer text-lg"
-          >
-            Save Template
-          </button>
-
           {/* <button
             onClick={() => editorInstance?.runCommand("preview")}
             className="px-5 py-2 m-5 text-lg text-white bg-blue-500 border-none rounded-md cursor-pointer"
@@ -412,7 +408,7 @@ const App = () => {
           </button> */}
           <button
             onClick={handleRenderClick}
-            className="px-5 py-2 m-5 text-lg text-white bg-blue-500 border-none rounded-md cursor-pointer"
+            className="px-5 py-2 m-5 text-lg text-white bg-[#10BAAC] border-none rounded-md cursor-pointer"
           >
             Publish Template
           </button>

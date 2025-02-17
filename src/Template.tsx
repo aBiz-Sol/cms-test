@@ -53,10 +53,11 @@ const Template = () => {
             This Page is Empty
           </h1>
           <p className="text-center text-gray-500">
-            Add a page from a template, or drag blocks from the left panel.
+            Add a page from a template, <br />
+            or drag blocks from the right panel.
           </p>
           <button
-            className="px-6 py-3 font-semibold text-white transition-all bg-blue-500 rounded-lg shadow-lg hover:bg-blue-600"
+            className="px-6 py-3 font-semibold text-white transition-all bg-[#10BAAC] rounded-lg shadow-lg hover:bg-blue-600"
             onClick={() => {
               const components = editor.getHtml();
               const style = editor.getCss();
