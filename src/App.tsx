@@ -124,6 +124,14 @@ const App = () => {
     const editor = (window as any).editor;
     if (editor) {
       saveTemplate(editor);
+
+      // Ensure the updated pages are reflected in the state immediately
+      const savedData = localStorage.getItem(`gjsProject-${projectId}`);
+      if (savedData) {
+        const projectData = JSON.parse(savedData);
+        setPages(projectData.pages || []);
+      }
+
       toast.success("Template saved successfully 🚀");
     }
   };
@@ -229,8 +237,7 @@ const App = () => {
 
   const saveTemplate = (editor: Editor) => {
     if (!selectedPage) {
-      toast.error("No page selected to save!"); // Error toast
-      console.error("No page selected to save!");
+      toast.error("No page selected to save!");
       return;
     }
 
@@ -240,13 +247,11 @@ const App = () => {
       (asset: { attributes: { src: any } }) => asset.attributes.src
     );
 
-    // Get existing project data from localStorage
     const existingTemplateData = localStorage.getItem(
       `gjsProject-${projectId}`
     );
     if (!existingTemplateData) {
-      toast.error("No existing template found in localStorage."); // Error toast
-      console.error("No existing template found in localStorage.");
+      toast.error("No existing template found in localStorage.");
       return;
     }
 
@@ -254,19 +259,26 @@ const App = () => {
     try {
       parsedTemplateData = JSON.parse(existingTemplateData);
     } catch (error) {
-      console.error("Error parsing template data:", error);
-      toast.error("Error parsing template data!"); // Error toast
+      toast.error("Error parsing template data!");
       return;
     }
 
-    // Update the content of the selected page
     const updatedPages = pages.map((page) =>
       page.id === selectedPage.id
         ? { ...page, frames: [{ component: components }], styles, assets }
         : page
     );
+    // const updatedPages = pages.map((page) =>
+    //   page.id === selectedPage.id
+    //     ? {
+    //         ...page,
+    //         frames: [{ component: editor.getComponents().toJSON() }],
+    //         styles: editor.getStyle(),
+    //         assets,
+    //       }
+    //     : page
+    // );
 
-    // Save the updated project data back to localStorage
     const projectData = {
       id: parsedTemplateData.id,
       name: parsedTemplateData.name,
@@ -277,8 +289,16 @@ const App = () => {
       `gjsProject-${projectId}`,
       JSON.stringify(projectData)
     );
-    toast.success("Template saved for page!"); // Success toast
-    console.log("Template saved for page:", selectedPage.name);
+
+    // Update the pages state
+    setPages(updatedPages);
+
+    // Reload the selected page content
+    setTimeout(() => {
+      loadPageContent(selectedPage);
+    }, 100);
+
+    toast.success("Template saved successfully!");
   };
 
   const handleRenamePage = (page: any) => {
