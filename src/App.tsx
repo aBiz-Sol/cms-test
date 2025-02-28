@@ -20,6 +20,7 @@ import Template from "./Template";
 import { useNavigate, useParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Loader from "./components/Loader";
 
 const theme = createTheme({
   palette: {
@@ -404,6 +405,15 @@ const App = () => {
           },
           LoadOverrides,
         ]}
+        waitReady={
+          <>
+            <div className="flex items-center justify-center h-screen">
+              <span className="loader">
+                <Loader />
+              </span>
+            </div>
+          </>
+        }
         onEditor={onEditor}
       >
         <Topbar
