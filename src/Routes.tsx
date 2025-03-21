@@ -1,25 +1,55 @@
 import React from "react";
-import {
-  BrowserRouter as Router,
-  Routes as RouterRoutes,
-  Route,
-  useNavigate,
-} from "react-router-dom";
-import Templates from "./components/Templates";
-import App from "./App";
-import Preview from "./components/Preview";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import LoadPage from "./component/LoadPage";
+import Header from "./component/Header";
+import NotFound from "./component/NotFound";
 
-const Routes = () => {
+// Layout component that optionally includes Header/Footer
+const Layout = ({ children }: { children: React.ReactNode }) => (
+  <div className="flex flex-col min-h-screen">
+    <Header />
+    <main className="flex-1">{children}</main>
+    <footer className="bg-black text-white p-4 text-center">
+      <p>© 2023 My Website. All rights reserved.</p>
+    </footer>
+  </div>
+);
+
+const RoutesComponent = () => {
   return (
     <Router>
-      <RouterRoutes>
-        <Route path="/" element={<Templates />} />
-        <Route path="/templates" element={<Templates />} />
-        <Route path="/builder/:projectId" element={<App />} />
-        <Route path="/preview/:pageId" element={<Preview />} />
-      </RouterRoutes>
+      <Routes>
+        {/* Routes with header/footer */}
+        <Route
+          path="/"
+          element={
+            <Layout>
+              <LoadPage page="home.html" />
+            </Layout>
+          }
+        />
+        <Route
+          path="/pricing"
+          element={
+            <Layout>
+              <LoadPage page="pricing.html" />
+            </Layout>
+          }
+        />
+        <Route
+          path="/contact"
+          element={
+            <Layout>
+              <LoadPage page="contact.html" />
+            </Layout>
+          }
+        />
+
+        {/* For NotFound route, do not include Header/Footer */}
+        <Route path="*" element={<NotFound />} />
+      </Routes>
     </Router>
   );
 };
 
-export default Routes;
+export default RoutesComponent;

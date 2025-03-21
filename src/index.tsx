@@ -1,8 +1,8 @@
 import * as React from "react";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import Routes from "./Routes";
 import { createTheme, ThemeProvider } from "@mui/material";
+import App from "./App";
 const theme = createTheme({
   components: {
     MuiPopover: {
@@ -29,7 +29,7 @@ if (rootElement) {
   root.render(
     <StrictMode>
       <ThemeProvider theme={theme}>
-        <Routes />
+        <App />
       </ThemeProvider>
     </StrictMode>
   );
