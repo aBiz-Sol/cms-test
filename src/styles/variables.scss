@@ -1,0 +1,199 @@
+:root {
+
+    //Updated Colors list provided by figma 
+    --body-bg: #F7F7F7;
+    --primary-color: #10BAAC;
+    --button-hover: #0E9889;
+    --alerts: #FF9900;
+    --warnings: #FB3640;
+    --text-color: #545658;
+    --heading-color: #0C0C0C;
+    --stock-color: #EBEBEB;
+    --pure-white: #FFFFFF;
+    --pure-black: #000000;
+    --placeholder-text: #9D9AA1;
+    --secondary-button: #F1F5F9;
+    --icon-color: #667085;
+    --light-primary-color: #F3FCFB;
+    --tooltips: #08496D;
+    --gradient: linear-gradient(90deg, #10BAAC, #0FA2B6);
+
+    --white: #ffffff;
+    --black: #000000;
+    --primary-color: #10baac;
+    --body-background: #f7f7f7;
+    --hover: #0e9889;
+    --alert: #ff9900;
+    --warning: #fb3640;
+    --informative: #08496d;
+    --heading-color: #0c0c0c;
+    --body-text: #545658;
+    --border-color: #ebebeb;
+    --icon-color: #64748b;
+    --placeholder: #9d9aa1;
+    --primary-two: #218c75;
+    --input-text-color: #504f54;
+    --secondary-color: #f1f5f9;
+    --secondary-hover: #e2e8f0;
+    //
+    --bg-primary: #ffffff;
+    --bg-secondary: #000000;
+    --text-primary-color: #000000;
+    --text-secondary-color: #737791;
+    --text-tertiary-color: #737791;
+    --tab-hover: #08496d;
+    --input-disabled: #ebebeb;
+
+    // --white: #ffffff; //Remove
+    // --black: #000000;
+    // --primary-color: #10BAAC;
+    // --body-background: #F7F7F7;
+    // --hover: #0E9889;
+    // --alert: #FF9900;
+    // --warnning: #FB3640;
+    // --informative: #08496D;
+    // --heading-color: #0c0c0c;
+    // --body-text: #545658;
+    // --border-color: #ebebeb;
+    // --icon-color: #64748B;
+    // --placeholder: #9D9AA1;
+    // --primary-two: #218C75;
+    // --input-text-color: #504f54;
+    // --secondary-color: #F1F5F9;
+    // --secondary-hover: #E2E8F0;
+
+    //Other used colors
+    --Primary-Dark-Shade: #05004E;
+    --Primary-800: #4079ED;
+    --Grey-900: #151D48;
+    --slate-Grey: #425166;
+    --Grey-700: #737791;
+    --Neutral-700: #334155;
+    --Oceanic-Teal: #08495D;
+    --orange: #F90;
+    --Neutral-800: #1E293B;
+    --red: #FF2116;
+    --light-gray: #f1f1f1;
+    --silver-gray: #b0b0b0;
+    --dark-gray: #555555;
+    --grey-color2: #77838f;
+    --gray-dark: #818181;
+    --pale-gray: #cfcaca;
+    --soft-gray: #d3d3d3;
+    --slate-purple: #464255;
+    --teal-blue: #09496d;
+
+}
+
+.light {
+    --body-bg-gray: #FBFBFB;
+    --pure-white: #FFFFFF;
+
+    //new-colors
+    --white: #ffffff;
+    --black: #000000;
+    --primary-color: #10baac; // in use
+    --body-background: #f7f7f7; // in use
+    --hover: #0e9889;
+    --alert: #ff9900;
+    --warning: #fb3640;
+    --informative: #08496d;
+    --heading-color: #0c0c0c; // in use
+    --body-text: #545658;
+    --border-color: #ebebeb;
+    --icon-color: #64748b;
+    --placeholder: #9d9aa1;
+    --primary-two: #218c75;
+    --input-text-color: #504f54;
+    --secondary-color: #f1f5f9;
+    --secondary-hover: #e2e8f0;
+  
+    //
+    --bg-primary: #ffffff; // in use
+    --bg-secondary: #000000;
+    --text-primary-color: #000000; // in use
+    --text-secondary-color: #737791;
+    --text-tertiary-color: #737791;
+    --tab-hover: #08496d;
+    --input-disabled: #ebebeb;
+}
+
+.dark {
+    --body-bg-gray: #40484E;
+    --pure-white: #121212;
+    // --pure-black: #000001;
+    --pure-black: #e6e6f0;
+
+    //new-colors
+    --body-background: #40484E;
+    --body-text: #FFFFFF;
+    --input-text-color: #FFFFFF;
+    --heading-color: #FFFFFF;
+    --white: #0E151A;
+    --hover: #0e9889;
+    --border-color: #6D7881;
+    --icon-color: #64748b;
+    --placeholder: #9d9aa1;
+    --primary-two: #218c75;
+    --input-text-color: #ffffff;
+    --secondary-color: #f1f5f9;
+    --secondary-hover: #e2e8f0;
+    --primary-color: #019387;
+    --black: #FFFFFF;
+    --informative: #ffffff;
+    //
+    --bg-primary: #000000;
+    --bg-secondary: #ffffff;
+    --text-primary-color: #ffffff;
+    --text-secondary-color: #ffffff;
+    --text-tertiary-color: #000000;
+    --tab-hover: #ffffff;
+    --input-disabled: #545454;
+}
+
+
+
+$Primary_theme_color : #10baac;
+$Pricmary_black : #000000;
+$Primary_white: #ffffff; //Remove
+$label-Color: #504f54;
+$inputInnerTextColor: #504f54;
+$background-white: white;
+$image-Background-LightGray: #f3f3f3;
+$heading-Color: #475467;
+$line-Color: #a0a7ac;
+$mainBackgroundColor: #ffffff;
+$border : #EBEAED;
+
+///card colors
+$blue-color: #08496D;
+$greenColor: #218C75;
+$border-color: #ddd;
+$greyColor: #464255;
+$greyishColor: #818181;
+$blueish-color: #09496d;
+$background-grey: #d3d3d3;
+$stroke-color: #eff3f2;
+
+//landingPage..
+$orange-color: #FF9900;
+$dark-blue: #0A033C;
+$light-grey: #64748B;
+$dark-color: #10baac12;
+$greyColor1: #475569;
+$blue-color1: #2f2d51;
+$grey-color2: #77838f;
+$grey-color3: #898989;
+$grey-color4: #949DA6;
+$green-color1: #4a8f9f;
+$white-color1: #f9fafb;
+$white-color2: #e2e8f0;
+$white-color3: #cfcaca;
+$red-color: #e63946;
+$redish-color: #ff166a;
+$yellow-color: #f8b406;
+$yellowish-color: #ffc78b;
+$stroke-color-1: #E7E7EC;
+
+$start: left !default;
+$end: right !default;

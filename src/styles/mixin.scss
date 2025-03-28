@@ -1,0 +1,21 @@
+@mixin font-regular($size,$line-height){
+    // font-family: "Work Sans";
+    font-size: $size;
+    font-style: normal;
+    font-weight: 400;
+    line-height: $line-height;
+}
+ @mixin font-bold($size,$line-height){
+    // font-family: "Work Sans";
+    font-size: $size;
+    font-style: normal;
+    font-weight: 600;
+    line-height: $line-height;
+}
+
+@mixin font-custom($size,$line-height,$weight){
+    font-size: $size;
+    font-style: normal;
+    line-height: $line-height;
+    font-weight: $weight;
+}

@@ -1,12 +1,14 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import LoadPage from "./component/LoadPage";
-import Header from "./component/Header";
 import NotFound from "./component/NotFound";
+import Header from "./component/header/Header";
+import "./portalLayout.scss";
 
 // Layout component that optionally includes Header/Footer
 const Layout = ({ children }: { children: React.ReactNode }) => (
-  <div className="flex flex-col min-h-screen">
+  <div id="portal-layout">
+    {/* <Header /> */}
     <Header />
     <main className="flex-1">{children}</main>
     <footer className="bg-black text-white p-4 text-center">
@@ -37,7 +39,7 @@ const RoutesComponent = () => {
           }
         />
         <Route
-          path="/contact"
+          path="/contact-us"
           element={
             <Layout>
               <LoadPage page="contact.html" />
@@ -53,3 +55,4 @@ const RoutesComponent = () => {
 };
 
 export default RoutesComponent;
+

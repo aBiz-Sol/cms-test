@@ -1,0 +1,134 @@
+#portal-main-header {
+  .icon-wrapper {
+    display: inline-block;
+    transition: transform 0.4s ease;
+  }
+
+  .icon-wrapper:hover {
+    transform: scale(1.5);
+  }
+
+  .header {
+    background-color: var(--pure-white);
+    // box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 30px 30px -18px rgba(16, 186, 172, 0.05);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.10);
+    height: 10vh;
+    width: -webkit-fill-available;
+    position: fixed;
+    z-index: 999;
+    top: 0px;
+    padding: 0px 20px;
+    gap: 30px;
+
+    .header-nav-bar {
+      align-items: flex-start;
+      gap: 32px;
+      color: var(--grey-color2);
+
+      .nav-option:hover {
+        text-decoration: underline;
+        font-weight: bold;
+        cursor: pointer;
+        color: var(--primary-color);
+      }
+    }
+
+    .my-learnings {
+      font-size: 14px;
+      margin-inline-end: 80px;
+      color: var(--grey-color2);
+
+      &:hover {
+
+        text-decoration: underline;
+        font-weight: bold;
+        cursor: pointer;
+        color: var(--primary-color);
+      }
+    }
+
+    .language-menu {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-radius: 4px;
+      background-color: #fafafa;
+      padding: 10px 16px;
+    }
+
+    .menu-options {
+      background-color: var(--pure-white);
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      list-style: none;
+      margin: 4px 0 0 0;
+      width: 120px;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+      z-index: 10;
+
+      li {
+        padding: 10px;
+        cursor: pointer;
+
+        &:hover {
+          background-color: #f0f0f0;
+        }
+      }
+    }
+
+    .get-started-header {
+      height: 44px;
+      padding: 10px 16px;
+      border-radius: 5px;
+      background-color: var(--primary-color);
+      border: none;
+      color: var(--pure-white);
+    }
+
+    .profile {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .profile-info {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      color: var(--pure-black)
+    }
+  }
+
+  .ant-dropdown-menu-title-content {
+    color: black;
+    font-size: 18px;
+    font-weight: 500
+  }
+
+  .logo {
+    height: 50px;
+    width: 124px !important;
+    cursor: pointer;
+
+    img {
+      height: 100%;
+      width: 100%;
+      border-radius: 10px;
+    }
+  }
+
+  .icons-dropdown {
+    .icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 6px;
+      background-color: #fafafa;
+    }
+  }
+
+  .notification-bell {
+    padding: 10px;
+  }
+}

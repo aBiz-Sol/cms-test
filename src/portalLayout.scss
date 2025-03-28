@@ -1,0 +1,94 @@
+@import "../src//styles/variables.scss";
+#portal-layout {
+  height: 100%;
+  .main-layout {
+    // min-height: 100vh;
+    gap: 20px;
+    flex-direction: row;
+    width: 100%;
+    background: var(--bg, #f3f3f3);
+
+    .sidebar-content {
+      flex-grow: 1;
+      width: calc(100% - 15%);
+      height: 90vh;
+      overflow-y: auto;
+    }
+
+    .toogle-btn {
+      position: absolute;
+      top: calc(10vh + 10px);
+      z-index: 1;
+      background-color: #10baac;
+      border-radius: 50%;
+      color: var(--pure-white);
+      display: flex;
+
+      cursor: pointer;
+    }
+
+    .toogle-btn.right:dir(ltr) {
+      left: 14.5%;
+    }
+    .toogle-btn.left:dir(ltr) {
+      left: 5%;
+      transition: left 1s ease;
+      background-color: hsl(173, 82%, 47%);
+    }
+
+    .toogle-btn.right:dir(rtl) {
+      right: 14.5%;
+    }
+    .toogle-btn.left:dir(rtl) {
+      right: 5%;
+      transition: right 1s ease;
+      background-color: hsl(173, 82%, 47%);
+    }
+
+    .sidebar {
+      // flex-shrink: 0;
+      // margin: 5px;
+      transition: width 0.3s ease;
+      // background-color: rgb(216, 154, 154);
+      padding: 0px 14px;
+      background-color: var(--pure-white);
+      box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+      // height: calc(100vh - 10vh - 10px);
+    }
+
+    .sidebar.open {
+      width: 15%;
+    }
+
+    .sidebar.closed {
+      width: 2.5%;
+      overflow: hidden;
+    }
+  }
+
+  ///////////////////////////////////////////////////for sidebar responsivness//////////////////////
+
+  @media screen and (min-width: 768px) {
+    .main-layout {
+      .sidebar.closed {
+        width: 5.5%;
+        // overflow: hidden;
+        // background-color: rgb(63, 63, 68);
+      }
+
+      .sidebar {
+        flex-shrink: 0;
+        // margin: 5px;
+        transition: width 1s ease;
+        // background-color: red;
+        // width: 20%;
+        padding: 0px 14px;
+      }
+
+      .sidebar.open {
+        width: 15%;
+      }
+    }
+  }
+}
+

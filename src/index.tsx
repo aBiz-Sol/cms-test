@@ -2,7 +2,10 @@ import * as React from "react";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { createTheme, ThemeProvider } from "@mui/material";
+import { Provider } from "react-redux";
+
 import App from "./App";
+import store from "./redux/store";
 const theme = createTheme({
   components: {
     MuiPopover: {
@@ -29,10 +32,13 @@ if (rootElement) {
   root.render(
     <StrictMode>
       <ThemeProvider theme={theme}>
-        <App />
+        <Provider store={store}>
+          <App />
+        </Provider>
       </ThemeProvider>
     </StrictMode>
   );
 } else {
   console.error("Failed to find the root element");
 }
+

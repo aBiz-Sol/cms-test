@@ -1,0 +1,345 @@
+@import './variables.scss';
+@import './mixin.scss';
+
+// h1 {
+//   font-size: 3rem;
+//   color: var(--heading-color);
+//   line-height: 3rem;
+//   font-weight: 700;
+//   margin: 0px;
+//   padding: 0px;
+// }
+
+// h2 {
+//   font-size: 2.25rem;
+//   color: var(--heading-color);
+//   line-height: 2.5rem;
+//   font-weight: 700;
+//   margin: 0px;
+//   padding: 0px;
+// }
+
+// h3 {
+//   font-size: 1.875rem;
+//   color: var(--heading-color);
+//   line-height: 2.25rem;
+//   font-weight: 700;
+//   margin: 0px;
+//   padding: 0px;
+// }
+
+// h4 {
+//   font-size: 1.5rem;
+//   color: var(--heading-color);
+//   line-height: 2rem;
+//   font-weight: 700;
+//   margin: 0px;
+//   padding: 0px;
+// }
+
+// h5 {
+//   font-size: 1.25rem;
+//   color: var(--heading-color);
+//   line-height: 1.75rem;
+//   font-weight: 700;
+//   margin: 0px;
+//   padding: 0px;
+// }
+
+.t1 {
+  @include font-regular(18px, 28px);
+  color: var(--input-text-color);
+}
+
+.t2 {
+  @include font-regular(16px, 24px);
+  color: var(--input-text-color);
+}
+
+.t3 {
+  @include font-regular(14px, 20px);
+  color: var(--input-text-color);
+}
+
+.t4 {
+  @include font-regular(12px, 16px);
+  color: var(--input-text-color);
+}
+
+.b1 {
+  @include font-bold(18px, 28px);
+  color: var(--heading-color);
+}
+.b2 {
+  @include font-bold(16px, 24px);
+  color: var(--heading-color);
+}
+
+.b3 {
+  @include font-bold(14px, 20px);
+  color: var(--heading-color);
+}
+.b4 {
+  @include font-bold(12px, 16px);
+  color: var(--heading-color);
+}
+
+.t1-primary {
+  @extend .t1;
+  color: var(--primary-color);
+}
+
+.t1-heading {
+  @extend .t1;
+  color: var(--heading-color);
+}
+
+.t1-body {
+  @extend .t1;
+  color: var(--body-text);
+}
+
+.t1-placeholder {
+  @extend .t1;
+  color: var(--placeholder);
+}
+
+.t1-input {
+  @extend .t1;
+  color: var(--input-text-color);
+}
+
+// Variants for t2
+.t2-primary {
+  @extend .t2;
+  color: var(--primary-color);
+}
+
+.t2-heading {
+  @extend .t2;
+  color: var(--heading-color);
+}
+
+.t2-body {
+  @extend .t2;
+  color: var(--body-text);
+}
+
+.t2-placeholder {
+  @extend .t2;
+  color: var(--placeholder);
+}
+
+.t2-input {
+  @extend .t2;
+  color: var(--input-text-color);
+}
+
+// Variants for t3
+.t3-primary {
+  @extend .t3;
+  color: var(--primary-color);
+}
+
+.t3-heading {
+  @extend .t3;
+  color: var(--heading-color);
+}
+
+.t3-body {
+  @extend .t3;
+  color: var(--body-text);
+}
+
+.t3-placeholder {
+  @extend .t3;
+  color: var(--placeholder);
+}
+
+.t3-input {
+  @extend .t3;
+  color: var(--input-text-color);
+}
+
+// Variants for t4
+.t4-primary {
+  @extend .t4;
+  color: var(--primary-color);
+}
+
+.t4-heading {
+  @extend .t4;
+  color: var(--heading-color);
+}
+
+.t4-body {
+  @extend .t4;
+  color: var(--body-text);
+}
+
+.t4-placeholder {
+  @extend .t4;
+  color: var(--placeholder);
+}
+
+.t4-input {
+  @extend .t4;
+  color: var(--input-text-color);
+}
+
+// Variants for b1
+.b1-primary {
+  @extend .b1;
+  color: var(--primary-color);
+}
+
+.b1-heading {
+  @extend .b1;
+  color: var(--heading-color);
+}
+
+.b1-body {
+  @extend .b1;
+  color: var(--body-text);
+}
+
+.b1-placeholder {
+  @extend .b1;
+  color: var(--placeholder);
+}
+
+.b1-input {
+  @extend .b1;
+  color: var(--input-text-color);
+}
+
+// Variants for b2
+.b2-primary {
+  @extend .b2;
+  color: var(--primary-color);
+}
+
+.b2-heading {
+  @extend .b2;
+  color: var(--heading-color);
+}
+
+.b2-body {
+  @extend .b2;
+  color: var(--body-text);
+}
+
+.b2-placeholder {
+  @extend .b2;
+  color: var(--placeholder);
+}
+
+.b2-input {
+  @extend .b2;
+  color: var(--input-text-color);
+}
+
+// Variants for b3
+.b3-primary {
+  @extend .b3;
+  color: var(--primary-color);
+}
+
+.b3-heading {
+  @extend .b3;
+  color: var(--heading-color);
+}
+
+.b3-body {
+  @extend .b3;
+  color: var(--body-text);
+}
+
+.b3-placeholder {
+  @extend .b3;
+  color: var(--placeholder);
+}
+
+.b3-input {
+  @extend .b3;
+  color: var(--input-text-color);
+}
+
+// Variants for b4
+.b4-primary {
+  @extend .b4;
+  color: var(--primary-color);
+}
+
+.b4-heading {
+  @extend .b4;
+  color: var(--heading-color);
+}
+
+.b4-body {
+  @extend .b4;
+  color: var(--body-text);
+}
+
+.b4-placeholder {
+  @extend .b4;
+  color: var(--placeholder);
+}
+
+.b4-input {
+  @extend .b4;
+  color: var(--input-text-color);
+}
+
+  /* Heading styles */
+//   h1 {
+//     font-size: 32px;
+//     font-weight: bold;
+//   }
+  
+//   h2 {
+//     font-size: 24px;
+//     font-weight: bold;
+//   }
+//   h3 {
+//     font-size: 20px;
+//     font-weight: '600';
+//   }
+//   h4{
+//     font-size: 16px;
+//     font-weight: '600';
+//   }
+  
+  
+//   p {
+//     font-size: 16px;
+//     font-weight: normal;
+//   }
+
+//   .p1{
+//     font-size: 14px;
+//     font-weight: normal;
+//   }
+  
+  
+//   a {
+//     color: #007bff;
+//     text-decoration: none;
+//   }
+
+//   ::placeholder {
+//     color: black;
+//     opacity: 1;
+//     /* Firefox */
+// }
+
+// :-ms-input-placeholder {
+//     /* Internet Explorer 10-11 */
+//     color: black;
+// }
+
+// ::-ms-input-placeholder {
+//     /* Microsoft Edge */
+//     color: black;
+// }
+  
